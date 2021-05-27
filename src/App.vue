@@ -1,28 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-app>
+      <the-navigator/>
+      <v-main>
+        <the-right-page/>
+      </v-main>
+    </v-app>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheNavigator from '@/components/TheNavigator';
+import TheRightPage from '@/components/TheRightPage'
 
-export default {
+export default{
   name: 'App',
+
   components: {
-    HelloWorld
+    TheNavigator,
+    TheRightPage
+  },
+
+  data: () => ({
+    //
+  }),
+  create(){
+    
   }
 }
+
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>
