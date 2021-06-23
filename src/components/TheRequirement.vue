@@ -208,7 +208,7 @@ style="font-size:14px;"></v-treeview>
       @page-count="pageCount = $event"
     >
     
-    <template v-slot:item.priority="{ item }">
+    <template v-slot:[`item.priority`]="{ item }">
       <v-chip small
         :color="getColorP(item.priority)"
         dark
@@ -217,7 +217,7 @@ style="font-size:14px;"></v-treeview>
       </v-chip>
     </template>
 
-    <template v-slot:item.status="{ item }">
+    <template v-slot:[`item.status`]="{ item }">
       <v-chip small outlined
         :color="getColorS(item.status)"
         dark
@@ -405,7 +405,7 @@ export default{
       },
     },
 
-    watch: {
+  watch: {
       date () {
         this.dateFormatted = this.formatDate(this.date)
       },
@@ -436,7 +436,7 @@ export default{
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
  }
-
+  
 }
 </script>
 

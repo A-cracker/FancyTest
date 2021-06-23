@@ -52,7 +52,7 @@
               </v-list-item-avatar>
           <v-list-item-content>
             <v-row justify="space-around">
-              <v-col lg="2">
+              <v-col lg="2" >
             <v-list-item-title>悠仁</v-list-item-title>
             <v-list-item-subtitle>ID:002</v-list-item-subtitle>
               </v-col>
@@ -78,11 +78,11 @@
               </v-list-item>
          </v-list>
     
-    
+
+
 </div>
 </template>
 <script>
-
 </script>
 <style scoped>
 

@@ -78,18 +78,18 @@ color="#ECEFF1"
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               readonly
-              v-model="dateFormatted"
+              v-model="date1"
               label="创建时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date = parseDate(dateFormatted)"
+              @blur="date1 = parseDate(formatDate(date1))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
+            v-model="date1"
             no-title
             @input="menu1 = false"
           ></v-date-picker>
@@ -112,18 +112,18 @@ color="#ECEFF1"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="dateFormatted"
+              v-model="date2"
               label="结束时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date = parseDate(dateFormatted)"
+              @blur="date2 = parseDate(formatDate(date2))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
+            v-model="date2"
             no-title
             @input="menu2 = false"
           ></v-date-picker>
@@ -218,16 +218,56 @@ color="#ECEFF1"
       
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-      <v-btn icon
-        v-bind="attrs"
-        v-on="on">
-        <v-icon small>mdi-plus</v-icon>
-      </v-btn>
-      </template>
-      <span>添加需求</span>
-      </v-tooltip>
+      
+     <v-btn icon
+    @click="addListItemDialog=!addListItemDialog">
+      <v-icon small>mdi-plus</v-icon>
+    </v-btn>
+
+      <v-dialog
+        v-model="addListItemDialog"
+        max-width="500px"
+      >
+        <v-card>
+        <v-card-title>细化迭代</v-card-title>
+        <v-card-text>
+        <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="6">
+        <v-select
+          :items="['需求','用例','缺陷']"
+          label="选择添加项类别"
+          dense
+        ></v-select>
+       </v-col>
+       <v-col class="d-flex" cols="12" sm="6">
+        <v-select
+          :items="['HIGH','MIDDLE','LOW']"
+          label="选择优先级"
+          dense
+        ></v-select>
+       </v-col>
+        </v-row>
+        </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="dialog = false"
+            >
+              取消
+            </v-btn>
+            <v-btn
+              color="primary"
+              text
+              @click="dialog = false"
+            >
+              添加
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
 
       <v-btn icon>
         <v-icon small>mdi-chevron-down</v-icon>
@@ -247,7 +287,7 @@ color="#ECEFF1"
       @page-count="pageCount = $event"
     >
     
-    <template v-slot:item.priority="{ item }">
+    <template v-slot:[`item.priority`]="{ item }">
       <v-chip small
         :color="getColorP(item.priority)"
         dark
@@ -256,7 +296,7 @@ color="#ECEFF1"
       </v-chip>
     </template>
 
-    <template v-slot:item.status="{ item }">
+    <template v-slot:[`item.status`]="{ item }">
       <v-chip small outlined
         :color="getColorS(item.status)"
         dark
@@ -284,19 +324,22 @@ color="#ECEFF1"
 
 </template>
 <script>
+
 export default{
     name:"ThePlan",
-    data: vm => ({
+    data: () => ({
       rules: [
-        value => !!value || '迭代名不能为空.',
+        value => !!value || '迭代名称不能为空',
         value => (value && value.length >= 2) || '至少输入一个字符',
       ],
 
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      
+      date1: new Date().toISOString().substr(0, 10),
+      date2: new Date().toISOString().substr(0, 10),
+  
       menu1: false,
       menu2:false,
-
+      addListItemDialog:false,
       dialog:false,
       hidden:false,
       items: [
@@ -458,6 +501,7 @@ export default{
         const [year, month, day] = date.split('-')
         return `${month}/${day}/${year}`
       },
+      //规范格式
       parseDate (date) {
         if (!date) return null
 

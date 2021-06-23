@@ -2,7 +2,8 @@
 <div>文档</div>
 </template>
 <script>
+
 export default{
-    name:"TheDoc"
+    name:"TheDoc",
 }
 </script>
