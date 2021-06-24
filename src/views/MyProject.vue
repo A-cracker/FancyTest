@@ -193,6 +193,7 @@ import TheDoc from '@/components/TheDoc';
 import TheChart from '@/components/TheChart';
 
  export default {
+    props:['id'],
     data: () => ({
       project:{
         projectObject:"对项目XXXX进行测试",

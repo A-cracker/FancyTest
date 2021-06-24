@@ -7,6 +7,7 @@ import MyInfo from '@/views/MyInfo'
 import MyTask from '@/views/MyTask'
 import TheDetail from '@/views/TheDetail'
 import MyMessage from '@/views/MyMessage'
+import MyProjectList from '@/views/MyProjectList'
 
 Vue.use(VueRouter)
 
@@ -28,12 +29,18 @@ const routes = [
     component: MyMessage
   },
   {
-    path: '/myproject',
+    path: '/myproject/:id',
     name: 'MyProject',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: MyProject
+    component: MyProject,
+    props:true
+  },
+  {
+    path: '/myprojectlist',
+    name: 'MyProjectList',
+    component: MyProjectList
   },
   {
     path: '/myinfo',
