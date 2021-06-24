@@ -198,7 +198,6 @@ style="font-size:14px;"></v-treeview>
 
   <v-card class="list">
     <v-data-table
-    
       :headers="headers"
       :items="desserts"
       :page.sync="page"
@@ -225,7 +224,7 @@ style="font-size:14px;"></v-treeview>
         {{ item.status }}
       </v-chip>
     </template>
-
+  
     </v-data-table>
 
     <div class="text-center pt-2">

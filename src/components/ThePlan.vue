@@ -241,8 +241,8 @@ color="#ECEFF1"
        </v-col>
        <v-col class="d-flex" cols="12" sm="6">
         <v-select
-          :items="['HIGH','MIDDLE','LOW']"
-          label="选择优先级"
+          :items="['需求1','需求2','需求3']"
+          label="选择需要添加的需求"
           dense
         ></v-select>
        </v-col>
@@ -253,14 +253,14 @@ color="#ECEFF1"
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="addListItemDialog = false"
             >
               取消
             </v-btn>
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="addListItemDialog = false"
             >
               添加
             </v-btn>
@@ -277,7 +277,6 @@ color="#ECEFF1"
 
   <v-card class="list">
     <v-data-table
-    
       :headers="headers"
       :items="desserts"
       :page.sync="page"
@@ -305,6 +304,13 @@ color="#ECEFF1"
       </v-chip>
     </template>
 
+    <template v-slot:[`item.title`]="{ item }">
+      <!-- <router-link to="/thedetail"
+      >
+        {{ item.title }}
+      </router-link> -->
+      <a @click="routerto(item.id)">{{item.title}}</a>
+    </template>
     </v-data-table>
 
     <div class="text-center pt-2">
@@ -324,6 +330,7 @@ color="#ECEFF1"
 
 </template>
 <script>
+
 
 export default{
     name:"ThePlan",
@@ -358,7 +365,7 @@ export default{
             sortable: false,
             value: 'id',
           },
-          { text: '需求标题', value: 'requirement', align: 'center'},
+          { text: '标题', value: 'title', align: 'center'},
           { text: '状态', value: 'status',align: 'center'},
           { text: '优先级', value: 'priority',align: 'center'},
           { text: '处理人', value: 'processor',align: 'center'},
@@ -369,7 +376,7 @@ export default{
         desserts: [
           {
             id: 1,
-            requirement: '用例1',
+            title: '用例1',
             status:'未执行',
             priority:'LOW',
             processor: '小梁',
@@ -379,7 +386,7 @@ export default{
           },
           {
             id: 2,
-            requirement: '需求2',
+            title: '需求2',
             status:'实现中',
             priority:'HIGH',
             processor: '小梁',
@@ -389,7 +396,7 @@ export default{
           },
           {
             id: 3,
-            requirement: '需求3',
+            title: '需求3',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -399,7 +406,7 @@ export default{
           },
           {
             id: 4,
-            requirement: '用例2',
+            title: '用例2',
             status:'未执行',
             priority:'MIDDLE',
             processor: '小梁',
@@ -409,7 +416,7 @@ export default{
           },
           {
             id: 5,
-           requirement: '用例3',
+           title: '用例3',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -419,7 +426,7 @@ export default{
           },
           {
             id: 6,
-           requirement: '需求6',
+           title: '需求6',
             status:'已实现',
             priority:'MIDDLE',
             processor: '小梁',
@@ -429,7 +436,7 @@ export default{
           },
           {
             id: 7,
-         requirement: '需求7',
+         title: '需求7',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -439,7 +446,7 @@ export default{
           },
            {
             id: 8,
-           requirement: '缺陷1',
+           title: '缺陷1',
             status:'已执行',
             priority:'LOW',
             processor: '小梁',
@@ -449,7 +456,7 @@ export default{
           },
           {
             id: 9,
-           requirement: '缺陷2',
+           title: '缺陷2',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -459,7 +466,7 @@ export default{
           },
            {
             id: 10,
-           requirement: '需求10',
+           title: '需求10',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -484,6 +491,12 @@ export default{
     },
 
  methods: {
+   routerto(number){
+     this.$router.push({
+       name:'TheDetail',
+       params:{id:number}
+     })
+   },
     getColorP (priority) {
         if (priority == "HIGH") return 'red'
         else if (priority == "MIDDLE") return 'orange'

@@ -224,7 +224,9 @@ import TheChart from '@/components/TheChart';
         TheChart
     },
   created(){
-
+    
+  },
+  mounted() {
   }
   }
 </script>

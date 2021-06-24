@@ -5,6 +5,7 @@ import MyProject from '@/views/MyProject'
 import MyToDo from '@/views/MyToDo'
 import MyInfo from '@/views/MyInfo'
 import MyTask from '@/views/MyTask'
+import TheDetail from '@/views/TheDetail'
 import MyMessage from '@/views/MyMessage'
 
 Vue.use(VueRouter)
@@ -14,6 +15,12 @@ const routes = [
     path: '/',
     name: 'MyPanel',
     component: MyPanel
+  },
+  {
+    path: '/thedetail/:id',
+    name: 'TheDetail',
+    component: TheDetail,
+    props:true,
   },
   {
     path: '/mymessage',
