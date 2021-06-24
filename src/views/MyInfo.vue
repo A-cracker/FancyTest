@@ -6,7 +6,7 @@
         个人信息
   </v-card>
 <div>
-  <v-card class="mx-auto col-md-10 infomation" height="700px" min-width="300px">
+  <v-card class="mx-auto col-md-10 infomation" height="650px" min-width="300px">
     <div class="d-flex justify-center avatar">
   <v-avatar size="100"><img src="@/assets/img.jpg"></v-avatar>
     </div>
@@ -19,20 +19,19 @@
 
     <div class="d-flex justify-space-around detail">
       <div class="left">
-        <p>名称：五条</p>
-        <p>身份：学生</p>
-        <p>手机号：15015546589</p>
-        <p>邮箱地址：1281590115@qq.com</p>
-        <p>生日：2021-6-7</p>
-        <p>组织：华南理工大学</p>
+        <p>身份：{{role}}</p>
+        <p>手机号：{{phoneNumber}}</p>
+        <p>邮箱地址：{{email}}</p>
+        <p>生日：{{birth}}</p>
+        <p>组织：{{location}}</p>
+        <p>密码：{{pwd}}</p>
       </div>
       <div class="right">
-        <p>性别：男</p>
-        <p>所在地：广东省广州市</p>
-        <p>所属院系：软件学院</p>
-        <p>年级：18级</p>
-        <p>所属班级：2班</p>
-        <p>密码：*********</p>
+        <p>性别：{{sexaulity}}</p>
+        <p>所在地：{{location}}</p>
+        <p>所属院系：{{school}}</p>
+        <p>年级：{{grade}}</p>
+        <p>所属班级：{{classNum}}</p>
       </div>
     </div>
     <div class="d-flex justify-center btn">
@@ -47,48 +46,38 @@ import axios from 'axios'
 const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/userinfo"
  export default {
     data: () => ({
-      username:"王春月",
-      id:"201830661298",
+      username:"",
+      id:"",
       pwd:"",
       email:"",
       phoneNumber:"",
-      class:"",
+      classNum:"",
+      school:"",
       organization:"",
+      grade:"",
       birth:"",
       location:"",
       role:"",
+      sexaulity:"",
     }),
   mounted(){
-   axios(`${url}/userinfo`).then(res=>{
-      this.username=res.data.username
+   axios.get(`${url}/test`).then(res=>{
+     this.username=res.data.username
      this.id=res.data.id
      this.pwd=res.data.pwd
      this.email=res.data.email
      this.phoneNumber=res.data.phoneNumber
-     this.class=res.data.class
+     this.classNum=res.data.classNum
      this.organization=res.data.organization
      this.birth=res.data.birth
      this.location=res.data.location
      this.role=res.data.role
+     this.grade=res.data.grade
+     this.school=res.data.school
+     this.sexaulity=res.data.sexaulity
    }).catch(function(error){
      console.log(error)
    })
-  //  axios.get("")
-  //  .then(res=>{
-    //  this.username=res.data.username
-    //  this.id=res.data.id
-    //  this.pwd=res.data.pwd
-    //  this.email=res.data.email
-    //  this.phoneNumber=res.data.phoneNumber
-    //  this.class=res.data.class
-    //  this.organization=res.data.organization
-    //  this.birth=res.data.birth
-    //  this.location=res.data.location
-    //  this.role=res.data.role
-  //  })
-  //  .catch(function(error){
-  //    console.log("message error")
-  //  })
  }
 
   }

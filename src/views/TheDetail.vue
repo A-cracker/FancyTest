@@ -1,7 +1,17 @@
 <!--传值类型和id-->
 <template>
     <div>
-        <div>h</div>
+      <v-toolbar
+      light
+      flat
+    >
+   
+      <v-toolbar-title> <v-btn icon>
+        <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>需求1</v-toolbar-title>
+      <v-spacer></v-spacer>
+      
+    </v-toolbar>
         <p>{{id}}</p>
     </div>
 </template>
@@ -10,8 +20,9 @@ export default{
     name:'TheDetail',
     props:['id'],
     data:()=>({
-        // 
-        c:"msg",
+        // 名称
+        title:"",
+
     }),
     mounted:{
     }
