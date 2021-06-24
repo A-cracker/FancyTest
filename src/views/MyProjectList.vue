@@ -11,7 +11,7 @@
     <v-tab>完成项目</v-tab>
   </v-tabs>
 
-  <div class="d-flex justify-start">
+  <div class="d-flex justify-start flex-wrap">
           <v-card
           class="pro"
           min-width="180px"
@@ -41,7 +41,7 @@ export default{
         projectList:[
             {id:1,name:'项目1',url:require("@/assets/img.jpg")},
             {id:2,name:'项目2',url:require("@/assets/img.jpg")},
-            ],
+           ],
     }),
     methods:{
         routerto(number){
