@@ -1,36 +1,36 @@
 <template>
 <v-container>
   <v-card
-    class="mx-auto col-md-10" min-width="200px"
+    class="mx-auto col-md-10" min-width="300px"
   >
         个人信息
   </v-card>
 <div>
-  <v-card class="mx-auto col-md-10 infomation" height="650px" min-width="300px">
+  <v-card class="mx-auto col-md-10 infomation" height="670px" min-width="300px">
     <div class="d-flex justify-center avatar">
   <v-avatar size="100"><img src="@/assets/img.jpg"></v-avatar>
     </div>
     <div class="d-flex justify-center btn">
     <v-btn light depressed small>更换头像</v-btn>
     </div>
-    <span id="username" class="d-flex justify-center">{{username}}</span>
+    <span id="username" class="d-flex justify-center">{{info.username}}</span>
 
-    <span id="id" class="d-flex justify-center">{{id}}</span>
+    <span id="id" class="d-flex justify-center">{{info.id}}</span>
 
     <div class="d-flex justify-space-around detail">
       <div class="left">
-        <v-text-field label="身份" v-model="role" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="手机号" v-model="phoneNumber" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="邮箱" v-model="email" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="组织" v-model="organization" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="密码" v-model="pwd" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="身份" v-model="info.role" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="邮箱" v-model="info.email" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="组织" v-model="info.organization" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="密码" v-model="info.pwd" outlined dense :disabled="uneditable"></v-text-field>
       </div>
       <div class="right">
-        <v-text-field label="性别" v-model="sexaulity" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所属院系" v-model="school" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="年级" v-model="grade" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所在地" v-model="location" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所属班级" v-model="classNum" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="性别" v-model="info.sexaulity" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所属院系" v-model="info.school" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="年级" v-model="info.grade" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所在地" v-model="info.location" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所属班级" v-model="info.classNum" outlined dense :disabled="uneditable"></v-text-field>
       </div>
     </div>
     <div class="d-flex justify-center btn">
@@ -49,7 +49,8 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
       hidden1:true,
       hidden2:false,
       uneditable:true,
-      
+
+    info:{
       username:"",
       id:"",
       pwd:"",
@@ -62,6 +63,8 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
       location:"",
       role:"",
       sexaulity:"",
+    },
+
     }),
     methods:{
       changeInfo(){
@@ -72,22 +75,26 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
       saveInfo(){
         this.changeInfo()
         alert("保存个人信息成功")
+        axios.put(`${url}/test2`,this.info).then(res=>
+        {
+          console.log(res)
+        })
       }
     },
   mounted(){
    axios.get(`${url}/test`).then(res=>{
-     this.username=res.data.username
-     this.id=res.data.id
-     this.pwd=res.data.pwd
-     this.email=res.data.email
-     this.phoneNumber=res.data.phoneNumber
-     this.classNum=res.data.classNum
-     this.organization=res.data.organization
-     this.location=res.data.location
-     this.role=res.data.role
-     this.grade=res.data.grade
-     this.school=res.data.school
-     this.sexaulity=res.data.sexaulity
+     this.info.username=res.data.username
+     this.info.id=res.data.id
+     this.info.pwd=res.data.pwd
+     this.info.email=res.data.email
+     this.info.phoneNumber=res.data.phoneNumber
+     this.info.classNum=res.data.classNum
+     this.info.organization=res.data.organization
+     this.info.location=res.data.location
+     this.info.role=res.data.role
+     this.info.grade=res.data.grade
+     this.info.school=res.data.school
+     this.info.sexaulity=res.data.sexaulity
    }).catch(function(error){
      console.log(error)
    })
@@ -106,7 +113,7 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
   margin-top: 10px;
 }
 .detail{
-  margin-top:35px;
+  margin-top:30px;
   margin-bottom:10px;
 }
 .avatar{
