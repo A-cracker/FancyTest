@@ -19,23 +19,23 @@
 
     <div class="d-flex justify-space-around detail">
       <div class="left">
-        <p>身份：{{role}}</p>
-        <p>手机号：{{phoneNumber}}</p>
-        <p>邮箱地址：{{email}}</p>
-        <p>生日：{{birth}}</p>
-        <p>组织：{{location}}</p>
-        <p>密码：{{pwd}}</p>
+        <v-text-field label="身份" v-model="role" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="手机号" v-model="phoneNumber" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="邮箱" v-model="email" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="组织" v-model="organization" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="密码" v-model="pwd" outlined dense :disabled="uneditable"></v-text-field>
       </div>
       <div class="right">
-        <p>性别：{{sexaulity}}</p>
-        <p>所在地：{{location}}</p>
-        <p>所属院系：{{school}}</p>
-        <p>年级：{{grade}}</p>
-        <p>所属班级：{{classNum}}</p>
+        <v-text-field label="性别" v-model="sexaulity" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所属院系" v-model="school" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="年级" v-model="grade" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所在地" v-model="location" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="所属班级" v-model="classNum" outlined dense :disabled="uneditable"></v-text-field>
       </div>
     </div>
     <div class="d-flex justify-center btn">
-    <v-btn dark depressed>修改个人信息</v-btn>
+    <v-btn dark depressed @click="changeInfo" v-show="hidden1">修改个人信息</v-btn>
+    <v-btn dark depressed @click="saveInfo" v-show="hidden2">保存</v-btn>
     </div>
   </v-card>
 </div>
@@ -46,6 +46,10 @@ import axios from 'axios'
 const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/userinfo"
  export default {
     data: () => ({
+      hidden1:true,
+      hidden2:false,
+      uneditable:true,
+      
       username:"",
       id:"",
       pwd:"",
@@ -55,11 +59,21 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
       school:"",
       organization:"",
       grade:"",
-      birth:"",
       location:"",
       role:"",
       sexaulity:"",
     }),
+    methods:{
+      changeInfo(){
+        this.hidden1=!this.hidden1
+        this.hidden2=!this.hidden2
+        this.uneditable=!this.uneditable
+      },
+      saveInfo(){
+        this.changeInfo()
+        alert("保存个人信息成功")
+      }
+    },
   mounted(){
    axios.get(`${url}/test`).then(res=>{
      this.username=res.data.username
@@ -69,7 +83,6 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
      this.phoneNumber=res.data.phoneNumber
      this.classNum=res.data.classNum
      this.organization=res.data.organization
-     this.birth=res.data.birth
      this.location=res.data.location
      this.role=res.data.role
      this.grade=res.data.grade
@@ -93,8 +106,8 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
   margin-top: 10px;
 }
 .detail{
-  margin-top:65px;
-  margin-bottom:40px;
+  margin-top:35px;
+  margin-bottom:10px;
 }
 .avatar{
   margin-top:15px;
