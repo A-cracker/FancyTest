@@ -11,7 +11,7 @@
   <v-avatar size="100"><img src="@/assets/img.jpg"></v-avatar>
     </div>
     <div class="d-flex justify-center btn">
-    <v-btn light depressed small>更换头像</v-btn>
+    <v-btn light depressed small :readonly="uneditable">更换头像</v-btn>
     </div>
     <span id="username" class="d-flex justify-center">{{info.username}}</span>
 
@@ -19,18 +19,18 @@
 
     <div class="d-flex justify-space-around detail">
       <div class="left">
-        <v-text-field label="身份" v-model="info.role" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="邮箱" v-model="info.email" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="组织" v-model="info.organization" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="密码" v-model="info.pwd" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="身份" v-model="info.role" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="邮箱" v-model="info.email" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="学校" v-model="info.organization" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="所属班级" v-model="info.classNum" outlined dense :readonly="uneditable"></v-text-field>
       </div>
       <div class="right">
-        <v-text-field label="性别" v-model="info.sexaulity" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所属院系" v-model="info.school" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="年级" v-model="info.grade" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所在地" v-model="info.location" outlined dense :disabled="uneditable"></v-text-field>
-        <v-text-field label="所属班级" v-model="info.classNum" outlined dense :disabled="uneditable"></v-text-field>
+        <v-text-field label="性别" v-model="info.sexaulity" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="所属院系" v-model="info.school" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="年级" v-model="info.grade" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="所在地" v-model="info.location" outlined dense :readonly="uneditable"></v-text-field>
+        
       </div>
     </div>
     <div class="d-flex justify-center btn">
@@ -53,7 +53,6 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
     info:{
       username:"",
       id:"",
-      pwd:"",
       email:"",
       phoneNumber:"",
       classNum:"",
@@ -81,11 +80,11 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
         })
       }
     },
+
   mounted(){
    axios.get(`${url}/test`).then(res=>{
      this.info.username=res.data.username
      this.info.id=res.data.id
-     this.info.pwd=res.data.pwd
      this.info.email=res.data.email
      this.info.phoneNumber=res.data.phoneNumber
      this.info.classNum=res.data.classNum
@@ -118,5 +117,8 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
 }
 .avatar{
   margin-top:15px;
+}
+.left,.right{
+  width:250px
 }
 </style>
