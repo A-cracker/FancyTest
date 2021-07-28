@@ -33,6 +33,7 @@
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+
   </v-list>
 </v-navigation-drawer>
 </template>
@@ -47,7 +48,7 @@ export default{
           { title: '我的', icon: 'mdi-account' ,route:'/mytodo'},
           { title: '消息', icon: 'mdi-comment-multiple',route:'/mymessage' },
           { title: '作业', icon: 'mdi-book-variant',route: '/mytask'},
-          
+          { title: '设置', icon: 'mdi-cog',route: '/mysetting'},
         ],
         right: null,
       }
