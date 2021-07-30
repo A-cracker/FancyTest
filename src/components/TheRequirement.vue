@@ -78,18 +78,18 @@ color="#ECEFF1"
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               readonly
-              v-model="dateFormatted"
+              v-model="date1"
               label="创建时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date = parseDate(dateFormatted)"
+              @blur="date1 = parseDate(formatDate(date1))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
+            v-model="date1"
             no-title
             @input="menu1 = false"
           ></v-date-picker>
@@ -112,18 +112,18 @@ color="#ECEFF1"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="dateFormatted"
+              v-model="date2"
               label="结束时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date = parseDate(dateFormatted)"
+              @blur="date2 = parseDate(formatDate(date2))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
+            v-model="date2"
             no-title
             @input="menu2 = false"
           ></v-date-picker>
@@ -246,15 +246,17 @@ style="font-size:14px;"></v-treeview>
 <script>
 export default{
     name:"TheRequirement",
-    data: vm => ({
+    data: () => ({
       rules: [
         value => !!value || '迭代名不能为空.',
         value => (value && value.length >= 2) || '至少输入一个字符',
       ],
 
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      menu1: false,
+      date1: new Date().toISOString().substr(0, 10),
+      date2: new Date().toISOString().substr(0, 10),
+
+      
+      menu1:false,
       menu2:false,
 
       dialog:false,
