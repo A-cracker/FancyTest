@@ -171,7 +171,7 @@ color="#ECEFF1"
 <div class="d-flex flex-row root" style="background-color:#ECEFF1;">
 
  <!--选项卡--> 
-<v-card class="tab">
+<v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px">
 <v-tabs vertical>
       <v-tab>
         <v-icon left>
@@ -275,8 +275,9 @@ color="#ECEFF1"
     </v-toolbar>
   </v-card>
 
-  <v-card class="list">
+  <v-card class="list overflow-y-auto overflow-x-hidden" max-height="600px">
     <v-data-table
+      max-height="600px"
       :headers="headers"
       :items="desserts"
       :page.sync="page"
@@ -309,7 +310,7 @@ color="#ECEFF1"
       >
         {{ item.title }}
       </router-link> -->
-      <a @click="routerto(item.id)">{{item.title}}</a>
+      <a @click="routerto(item.id,item.title)">{{item.title}}</a>
     </template>
     </v-data-table>
 
@@ -446,7 +447,7 @@ export default{
           },
            {
             id: 8,
-           title: '缺陷1',
+            title: '缺陷1',
             status:'已执行',
             priority:'LOW',
             processor: '小梁',
@@ -491,10 +492,10 @@ export default{
     },
 
  methods: {
-   routerto(number){
+   routerto(number,name){
      this.$router.push({
        name:'TheDetail',
-       params:{id:number}
+       params:{id:number, title:name}
      })
    },
     getColorP (priority) {
