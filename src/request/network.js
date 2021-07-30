@@ -30,5 +30,16 @@ export default {
           reject(error);
         });
     });
+  },
+  put: function(path = '', data = {}) {
+    return new Promise(function(resolve, reject) {
+      axios.put(path, data)
+        .then(function(response) {
+          resolve(response.data);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   }
 };

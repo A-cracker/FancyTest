@@ -42,8 +42,9 @@
   </v-container>
 </template>
 <script>
-import axios from 'axios'
-const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/userinfo"
+// import axios from 'axios'
+import {getInfo,saveInfo} from '@/request/api'
+// const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/userinfo"
  export default {
     data: () => ({
       hidden1:true,
@@ -74,29 +75,24 @@ const url ="https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/user
       saveInfo(){
         this.changeInfo()
         alert("保存个人信息成功")
-        axios.put(`${url}/test2`,this.info).then(res=>
-        {
-          console.log(res)
-        })
+        saveInfo(this.info).then(res=>{console.log(res)})
       }
     },
 
   mounted(){
-   axios.get(`${url}/test`).then(res=>{
-     this.info.username=res.data.username
-     this.info.id=res.data.id
-     this.info.email=res.data.email
-     this.info.phoneNumber=res.data.phoneNumber
-     this.info.classNum=res.data.classNum
-     this.info.organization=res.data.organization
-     this.info.location=res.data.location
-     this.info.role=res.data.role
-     this.info.grade=res.data.grade
-     this.info.school=res.data.school
-     this.info.sexaulity=res.data.sexaulity
-   }).catch(function(error){
-     console.log(error)
-   })
+    getInfo().then(res => {
+     this.info.username=res.username
+     this.info.id=res.id
+     this.info.email=res.email
+     this.info.phoneNumber=res.phoneNumber
+     this.info.classNum=res.classNum
+     this.info.organization=res.organization
+     this.info.location=res.location
+     this.info.role=res.role
+     this.info.grade=res.grade
+     this.info.school=res.school
+     this.info.sexaulity=res.sexaulity
+    });
  }
 
   }
