@@ -42,7 +42,7 @@ export default{
     data () {
       return {
         items: [
-          { title: '仪表盘', icon: 'mdi-view-dashboard',route:'/'},
+          { title: '仪表盘', icon: 'mdi-view-dashboard',route:'/mypanel'},
           { title: '项目', icon: 'mdi-folder',route: '/myprojectlist'},
           { title: '我的', icon: 'mdi-account' ,route:'/mytodo'},
           { title: '消息', icon: 'mdi-comment-multiple',route:'/mymessage' },

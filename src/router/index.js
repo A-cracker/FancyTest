@@ -8,12 +8,18 @@ import MyTask from '@/views/MyTask'
 import TheDetail from '@/views/TheDetail'
 import MyMessage from '@/views/MyMessage'
 import MyProjectList from '@/views/MyProjectList'
+import Login from '@/views/Login'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path:'/',
+    name:'Login',
+    component: Login
+  },
+  {
+    path: '/mypanel',
     name: 'MyPanel',
     component: MyPanel
   },
@@ -39,7 +45,7 @@ const routes = [
   },
   {
     path: '/myprojectlist',
-    name: 'MyProjectList',
+    name: '/MyProjectList',
     component: MyProjectList
   },
   {
@@ -56,7 +62,7 @@ const routes = [
     path: '/mytodo',
     name: 'MyToDo',
     component: MyToDo
-  },
+  } 
 ]
 
 const router = new VueRouter({
