@@ -15,7 +15,6 @@
           color="primary"
         >
           <v-tab
-            
             v-for="item in items"
             :key="item"
             :href="'#tab-' + item.text"

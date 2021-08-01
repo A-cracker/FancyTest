@@ -171,30 +171,21 @@ color="#ECEFF1"
 <div class="d-flex flex-row root" style="background-color:#ECEFF1;">
 
  <!--选项卡--> 
-<v-card class="tab">
+<v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px">
 <v-tabs vertical>
       <v-tab>
-        <v-icon left>
-          mdi-chart-timeline-variant
-        </v-icon>
         迭代1
         <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
         </v-btn>
       </v-tab>
       <v-tab>
-        <v-icon left>
-          mdi-chart-timeline-variant
-        </v-icon>
         迭代2
          <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
         </v-btn>
       </v-tab>
       <v-tab>
-        <v-icon left>
-          mdi-chart-timeline-variant
-        </v-icon>
         迭代3
          <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
@@ -204,7 +195,7 @@ color="#ECEFF1"
 </v-card>
 
  <!--迭代内容--> 
-<div class="content d-flex flex-column root flex-grow-1">
+<div class="content d-flex flex-column root flex-grow-1" style="height:600px;">
 
 <!--工具栏-->
   <v-card class="nav">
@@ -212,7 +203,11 @@ color="#ECEFF1"
       flat
       height="45"
     >
-      <v-toolbar-title class="font-weight-light" style="font-size:15px;">迭代1
+      <v-toolbar-title class="font-weight-light" style="font-size:15px;">
+        <v-icon left>
+          mdi-chart-timeline-variant
+        </v-icon>
+        迭代1
         <span class="font-weight-light" style="font-size:10px;">2021-05-07 ~ 2021-05-17</span>
       </v-toolbar-title>
       
@@ -270,13 +265,14 @@ color="#ECEFF1"
 
 
       <v-btn icon>
-        <v-icon small>mdi-chevron-down</v-icon>
+        <v-icon small>mdi-filter-menu-outline</v-icon>
       </v-btn>
     </v-toolbar>
   </v-card>
 
-  <v-card class="list">
+  <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
+      
       :headers="headers"
       :items="desserts"
       :page.sync="page"
@@ -305,11 +301,8 @@ color="#ECEFF1"
     </template>
 
     <template v-slot:[`item.title`]="{ item }">
-      <!-- <router-link to="/thedetail"
-      >
-        {{ item.title }}
-      </router-link> -->
-      <a @click="routerto(item.id)">{{item.title}}</a>
+     
+      <a @click="routerto(item.id,item.title)">{{item.title}}</a>
     </template>
     </v-data-table>
 
@@ -319,6 +312,7 @@ color="#ECEFF1"
         :length="pageCount"
       ></v-pagination>
     </div>
+
   </v-card>
 <!--列表-->
   </div>
@@ -446,7 +440,7 @@ export default{
           },
            {
             id: 8,
-           title: '缺陷1',
+            title: '缺陷1',
             status:'已执行',
             priority:'LOW',
             processor: '小梁',
@@ -491,10 +485,10 @@ export default{
     },
 
  methods: {
-   routerto(number){
+   routerto(number,name){
      this.$router.push({
        name:'TheDetail',
-       params:{id:number}
+       params:{id:number, title:name}
      })
    },
     getColorP (priority) {
@@ -528,7 +522,6 @@ export default{
 
 <style scoped>
 .root{
-  
   height: 100%;
 }
 .tab{
@@ -539,11 +532,11 @@ export default{
   width:100%;
   margin-left: 10px;
   margin-right:10px;
+  margin-bottom: 7px;
 }
 .list{
   margin-top: 7px;
   height:100%;
-  margin-bottom: 7px;
 }
 
 </style>

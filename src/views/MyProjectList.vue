@@ -38,6 +38,7 @@
             创建项目
           </v-card-title>
           <v-card-text>
+            <v-form>
               <v-text-field
             label="项目名称"
             placeholder="项目名"
@@ -55,6 +56,7 @@
           label="项目描述"
           value=""
         ></v-textarea>
+            </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -64,7 +66,7 @@
               @click="createDialog = false"
             >
               取消
-            </v-btn>
+           </v-btn>
             <v-btn
               color="primary"
               text
@@ -84,8 +86,8 @@ export default{
     data:()=>({
         createDialog:false,
         projectList:[
-            {id:1,name:'项目1',url:require("@/assets/img.jpg")},
-            {id:2,name:'项目2',url:require("@/assets/img.jpg")},
+            {id:1,name:'项目1',url:require("@/assets/img3.jpg")},
+            {id:2,name:'项目2',url:require("@/assets/img3.jpg")},
            ],
     }),
     methods:{
@@ -94,7 +96,7 @@ export default{
                 name:"MyProject",
                 params:{id:number}
             })
-        }
+        },
     }
 }
 </script>

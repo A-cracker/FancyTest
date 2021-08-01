@@ -9,6 +9,7 @@ import TheDetail from '@/views/TheDetail'
 import MyMessage from '@/views/MyMessage'
 import MyProjectList from '@/views/MyProjectList'
 import Login from '@/views/Login'
+import MySetting from '@/views/MySetting'
 
 Vue.use(VueRouter)
 
@@ -61,8 +62,13 @@ const routes = [
   {
     path: '/mytodo',
     name: 'MyToDo',
-    component: MyToDo
-  } 
+    component: MyToDo 
+  },
+  {
+    path: '/mysetting',
+    name: 'MySetting',
+    component: MySetting
+  },
 ]
 
 const router = new VueRouter({
