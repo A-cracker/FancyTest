@@ -7,7 +7,7 @@
       <v-toolbar-title><v-icon>mdi-cog</v-icon>我的设置</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
-
+    <v-divider></v-divider>
     <div class="d-flex flex-row root">
       <v-card class="tab">
       <v-tabs vertical>

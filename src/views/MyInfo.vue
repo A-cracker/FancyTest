@@ -1,12 +1,13 @@
 <template>
-<v-container>
+<v-container class="d-flex flex-column">
   <v-card
     class="mx-auto col-md-10" min-width="300px"
   >
         个人信息
   </v-card>
+
 <div>
-  <v-card class="mx-auto col-md-10 infomation" height="670px" min-width="300px">
+  <v-card class="mx-auto col-md-10 infomation" height="635px" min-width="300px">
     <div class="d-flex justify-center avatar">
   <v-avatar size="100"><img src="@/assets/img.jpg"></v-avatar>
     </div>
@@ -104,12 +105,10 @@ import {getInfo,saveInfo} from '@/request/api'
 #username{
   margin-top:10px;
 }
-.btn{
-  margin-top: 10px;
-}
+
 .detail{
   margin-top:30px;
-  margin-bottom:10px;
+  margin-bottom:5px;
 }
 .avatar{
   margin-top:15px;

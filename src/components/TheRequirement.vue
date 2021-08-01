@@ -161,7 +161,7 @@ color="#ECEFF1"
     
     <span class="font-weight-light" style="font-size:10px;">|共10个需求</span>
 
-    <v-btn icon @click="hidden=!hidden">
+    <v-btn icon @click="hidden=!hidden;selectable=!selectable">
         <v-icon>mdi-delete</v-icon>
     </v-btn>
     
@@ -173,7 +173,7 @@ color="#ECEFF1"
 
  <!--需求树--> 
 <v-card class="tree" width="210">
-<v-treeview :items="tree" dense hoverable activatable class="font-weight-light"
+<v-treeview :items="tree" dense hoverable activatable class="font-weight-light" :selectable="selectable"
 style="font-size:14px;"></v-treeview>
 </v-card>
 
@@ -267,6 +267,8 @@ export default{
           { title: 'About', icon: 'mdi-chart-timeline-variant' },
         ],
         
+        selectable:false,
+
         page: 1,
         pageCount: 0,
         itemsPerPage: 9,
