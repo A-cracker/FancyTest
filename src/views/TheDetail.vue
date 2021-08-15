@@ -2,7 +2,7 @@
 <template>
     <div>
       <v-toolbar-title> 
-        <v-btn icon>
+        <v-btn icon @click="$router.back(-1)">
         <v-icon>mdi-arrow-left</v-icon>
         </v-btn>{{title}}
         </v-toolbar-title>
@@ -34,7 +34,7 @@ export default{
 
       getContent(){
         console.log(this.$refs.editorRef.getContent())
-      }
+      },
     }
 }
 </script>

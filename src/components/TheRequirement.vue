@@ -26,7 +26,7 @@ color="#ECEFF1"
 
         <v-text-field
         style="margin-bottom:10px;"
-        label="迭代名"
+        label="需求名"
         :rules="rules"
         hide-details="auto"
         required
@@ -40,7 +40,7 @@ color="#ECEFF1"
               >
                 <v-select
                   persistent-hint
-                  hint="选择迭代优先级"
+                  hint="选择需求优先级"
                   :items="['未执行','实现中','已实现']"
                   label="优先级*"
                   required
@@ -52,7 +52,7 @@ color="#ECEFF1"
               >
                 <v-select
                 persistent-hint
-                  hint="选择迭代严重程度"
+                  hint="选择需求严重程度"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
                   label="严重程度*"
                   required
@@ -158,37 +158,32 @@ color="#ECEFF1"
       删除需求
     </v-btn>
     <v-spacer></v-spacer>
-    
     <span class="font-weight-light" style="font-size:10px;">|共10个需求</span>
-
     <v-btn icon @click="hidden=!hidden;selectable=!selectable">
         <v-icon>mdi-delete</v-icon>
     </v-btn>
-    
     </v-toolbar>
 </div>
 
 
 <div class="d-flex flex-row root" style="background-color:#ECEFF1;">
 
- <!--需求树--> 
-<v-card class="tree" width="210">
+ <!--选项卡--> 
+<v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px" v-show="hidden2" width="210">
 <v-treeview :items="tree" dense hoverable activatable class="font-weight-light" :selectable="selectable"
 style="font-size:14px;"></v-treeview>
 </v-card>
 
- <!--迭代内容--> 
-<div class="content d-flex flex-column root flex-grow-1">
+ <!--需求内容--> 
+<div class="content d-flex flex-column root flex-grow-1" style="height:600px;">
 
-<!--分类工具栏-->
+<!--工具栏-->
   <v-card class="nav">
     <v-toolbar
       flat
       height="45"
     >
-      <v-toolbar-title cols="12">    
-        
-    </v-toolbar-title>
+    <v-btn icon @click="hidden2=!hidden2"><v-icon small>mdi-menu</v-icon></v-btn>
     <v-spacer></v-spacer>
     <v-btn icon>
         <v-icon small>mdi-chevron-down</v-icon>
@@ -196,10 +191,11 @@ style="font-size:14px;"></v-treeview>
     </v-toolbar>
   </v-card>
 
-  <v-card class="list">
+  <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
+      
       :headers="headers"
-      :items="desserts"
+      :items="listItems"
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
@@ -224,7 +220,11 @@ style="font-size:14px;"></v-treeview>
         {{ item.status }}
       </v-chip>
     </template>
-  
+
+    <template v-slot:[`item.title`]="{ item }">
+     
+      <a @click="routerto(item.id,item.title)">{{item.title}}</a>
+    </template>
     </v-data-table>
 
     <div class="text-center pt-2">
@@ -233,6 +233,7 @@ style="font-size:14px;"></v-treeview>
         :length="pageCount"
       ></v-pagination>
     </div>
+
   </v-card>
 <!--列表-->
   </div>
@@ -244,31 +245,43 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
+
+
 export default{
     name:"TheRequirement",
     data: () => ({
       rules: [
-        value => !!value || '迭代名不能为空.',
+        value => !!value || '需求名称不能为空',
         value => (value && value.length >= 2) || '至少输入一个字符',
       ],
 
+      selectable:false,
       date1: new Date().toISOString().substr(0, 10),
       date2: new Date().toISOString().substr(0, 10),
-
-      
-      menu1:false,
+  
+      menu1: false,
       menu2:false,
-
+      addListItemDialog:false,
+      tree: [
+        {
+          id: 1,
+          name: '所有的(11)',
+          children: [
+            { id: 2, name: '未分类(7)' },
+            { id: 3, name: '功能用例(3)' },
+            { id: 4, name: '质量用例(1)' }
+          ],
+        }
+      ],
       dialog:false,
       hidden:false,
+      hidden2:true,
       items: [
           { title: 'Dashboard', icon: 'mdi-chart-timeline-variant' },
           { title: 'Photos', icon: 'mdi-chart-timeline-variant' },
           { title: 'About', icon: 'mdi-chart-timeline-variant' },
         ],
         
-        selectable:false,
-
         page: 1,
         pageCount: 0,
         itemsPerPage: 9,
@@ -279,7 +292,7 @@ export default{
             sortable: false,
             value: 'id',
           },
-          { text: '需求标题', value: 'requirement', align: 'center'},
+          { text: '标题', value: 'title', align: 'center'},
           { text: '状态', value: 'status',align: 'center'},
           { text: '优先级', value: 'priority',align: 'center'},
           { text: '处理人', value: 'processor',align: 'center'},
@@ -287,20 +300,21 @@ export default{
           { text: '预计开始', value: 'begin' ,align: 'center'},
           { text: '预估结束', value: 'end' ,align: 'center'},
         ],
-        desserts: [
+        listItems: [
           {
             id: 1,
-            requirement: '需求1',
+            title: '需求1',
             status:'未执行',
             priority:'LOW',
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'usecase'
           },
           {
             id: 2,
-            requirement: '需求2',
+            title: '需求2',
             status:'实现中',
             priority:'HIGH',
             processor: '小梁',
@@ -310,7 +324,7 @@ export default{
           },
           {
             id: 3,
-            requirement: '需求3',
+            title: '需求3',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -320,7 +334,7 @@ export default{
           },
           {
             id: 4,
-            requirement: '需求4',
+            title: '需求2',
             status:'未执行',
             priority:'MIDDLE',
             processor: '小梁',
@@ -330,7 +344,7 @@ export default{
           },
           {
             id: 5,
-           requirement: '需求5',
+           title: '需求3',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -340,7 +354,7 @@ export default{
           },
           {
             id: 6,
-           requirement: '需求6',
+           title: '需求6',
             status:'已实现',
             priority:'MIDDLE',
             processor: '小梁',
@@ -350,7 +364,7 @@ export default{
           },
           {
             id: 7,
-         requirement: '需求7',
+         title: '需求7',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -360,7 +374,7 @@ export default{
           },
            {
             id: 8,
-           requirement: '需求8',
+            title: '需求1',
             status:'已执行',
             priority:'LOW',
             processor: '小梁',
@@ -370,7 +384,7 @@ export default{
           },
           {
             id: 9,
-           requirement: '需求9',
+           title: '需求2',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -380,7 +394,7 @@ export default{
           },
            {
             id: 10,
-           requirement: '需求10',
+           title: '需求10',
             status:'未执行',
             priority:'HIGH',
             processor: '小梁',
@@ -389,17 +403,7 @@ export default{
             end:'2021-3-20'
           },
         ],
-      tree: [
-        {
-          id: 1,
-          name: '所有的(11)',
-          children: [
-            { id: 2, name: '未分类(7)' },
-            { id: 3, name: '功能需求(3)' },
-            { id: 4, name: '质量需求(1)' }
-          ],
-        }
-      ]
+
     }),
 
   computed: {
@@ -408,13 +412,19 @@ export default{
       },
     },
 
-  watch: {
+    watch: {
       date () {
         this.dateFormatted = this.formatDate(this.date)
       },
     },
 
  methods: {
+   routerto(number,name){
+     this.$router.push({
+       name:'TheDetail',
+       params:{id:number, title:name}
+     })
+   },
     getColorP (priority) {
         if (priority == "HIGH") return 'red'
         else if (priority == "MIDDLE") return 'orange'
@@ -432,6 +442,7 @@ export default{
         const [year, month, day] = date.split('-')
         return `${month}/${day}/${year}`
       },
+      //规范格式
       parseDate (date) {
         if (!date) return null
 
@@ -439,16 +450,15 @@ export default{
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
  }
-  
+
 }
 </script>
 
 <style scoped>
 .root{
-  
   height: 100%;
 }
-.tree{
+.tab{
   margin-left:10px;
   margin-bottom: 7px;
 }
@@ -456,13 +466,11 @@ export default{
   width:100%;
   margin-left: 10px;
   margin-right:10px;
-}
-.nav{
-    margin-bottom: 7px;
+  margin-bottom: 7px;
 }
 .list{
+  margin-top: 7px;
   height:100%;
-  margin-bottom: 7px;
 }
 
 </style>

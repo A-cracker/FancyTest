@@ -3,7 +3,7 @@
      <v-card class="drawer" min-width="150px"
       v-show="hidden">
       <v-tabs vertical>
-        <v-tab @click="switchDetail()"
+        <v-tab @click="switchDetail(item.id)"
         v-for="item in items"
         :key="item">
         <v-icon left small>
@@ -37,11 +37,11 @@ export default{
   data:()=>({
     hidden:true,
     items:[
-      {id:1,icon:"mdi-pencil-outline",title:"我的创建"},
-      {id:2,icon:"mdi-alarm",title:"我的待办"},
-      {id:3,icon:"mdi-calendar-check",title:"我已完成"},
-      {id:4,icon:"mdi-calendar-clock",title:"我的提醒"},
-      {id:5,icon:"mdi-file",title:"我的文档"}
+      {id:0,icon:"mdi-pencil-outline",title:"我的创建"},
+      {id:1,icon:"mdi-alarm",title:"我的待办"},
+      {id:2,icon:"mdi-calendar-check",title:"我已完成"},
+      {id:3,icon:"mdi-calendar-clock",title:"我的提醒"},
+      {id:4,icon:"mdi-file",title:"我的文档"}
     ],
     currentDetail:{
       title:"我的创建",
@@ -53,8 +53,8 @@ export default{
     
   },
   methods:{
-    switchDetail(){
-      //写对应tab的请求,接口参数为tabId
+    switchDetail(id){
+      this.currentDetail.title=this.items[id].title
       }
     },
 }
