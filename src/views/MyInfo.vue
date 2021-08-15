@@ -14,10 +14,9 @@
     <div class="d-flex justify-center btn">
     <v-btn light depressed small :readonly="uneditable">更换头像</v-btn>
     </div>
+
     <span id="username" class="d-flex justify-center">{{info.username}}</span>
-
     <span id="id" class="d-flex justify-center">{{info.id}}</span>
-
     <div class="d-flex justify-space-around detail">
       <div class="left">
         <v-text-field label="身份" v-model="info.role" outlined dense :readonly="uneditable"></v-text-field>
@@ -108,10 +107,10 @@ import {getInfo,saveInfo} from '@/request/api'
 
 .detail{
   margin-top:30px;
-  margin-bottom:5px;
 }
 .avatar{
   margin-top:15px;
+  margin-bottom: 10px;
 }
 .left,.right{
   width:250px

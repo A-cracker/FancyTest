@@ -47,7 +47,7 @@
             chips
             multiple
             hint="请填写成员的ID"
-            label="项目成员"
+            label="邀请项目成员"
             placeholder="201830661298"
           ></v-combobox>
            <v-textarea

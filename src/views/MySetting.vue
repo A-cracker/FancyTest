@@ -33,13 +33,23 @@
           <p class="font-weight-medium title">更改密码</p>
           <v-divider></v-divider>
           <div style="width:400px;margin-top:15px;">
-          <v-text-field label="请输入旧密码" outlined rounded dense flat type="password"></v-text-field>
+          <v-text-field :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+          :type="show1 ? 'text' : 'password'"
+          :rules="rules.required"
+          @click:append="show1 = !show1"
+          label="请输入旧密码" outlined rounded dense flat ></v-text-field>
           </div>
           <div style="width:400px;">
-          <v-text-field label="请输入新密码" outlined rounded dense flat type="password"></v-text-field>
+          <v-text-field :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
+          :type="show2 ? 'text' : 'password'"
+          @click:append="show2 = !show2"
+          label="请输入新密码" outlined rounded dense flat></v-text-field>
           </div>
           <div style="width:400px;">
-          <v-text-field label="请再次输入新密码" outlined rounded dense flat type="password"></v-text-field>
+          <v-text-field :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" 
+          :type="show3 ? 'text' : 'password'"
+          @click:append="show3 = !show3"
+          label="请再次输入新密码" outlined rounded dense flat></v-text-field>
           </div>
           <v-btn dark class="btn">更新密码</v-btn>
           <span style="font-size:5px;margin-left:10px;"><a>忘记密码？</a></span>
@@ -58,6 +68,15 @@
 </template>
 <script>
 export default{
+  data:()=>({
+    show1:false,
+    show2:false,
+    show3:false,
+    rules: {
+      required:[value => !!value || '输入不能为空。'],
+      
+      }
+    }),
   mounted:{
     
   },

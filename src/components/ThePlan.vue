@@ -302,7 +302,7 @@ color="#ECEFF1"
 
     <template v-slot:[`item.title`]="{ item }">
      
-      <a @click="routerto(item.id,item.title)">{{item.title}}</a>
+      <a @click="routerto(item.id,item.title,item.type)">{{item.title}}</a>
     </template>
     </v-data-table>
 
@@ -376,7 +376,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'use'//标注类型
           },
           {
             id: 2,
@@ -386,7 +387,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'req'
           },
           {
             id: 3,
@@ -396,7 +398,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'req'
           },
           {
             id: 4,
@@ -406,7 +409,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'use'
           },
           {
             id: 5,
@@ -416,7 +420,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'use'
           },
           {
             id: 6,
@@ -426,7 +431,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'req'
           },
           {
             id: 7,
@@ -436,7 +442,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'req'
           },
            {
             id: 8,
@@ -446,7 +453,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'bug'
           },
           {
             id: 9,
@@ -456,7 +464,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'bug'
           },
            {
             id: 10,
@@ -466,7 +475,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'req'
           },
         ],
 
@@ -485,10 +495,10 @@ export default{
     },
 
  methods: {
-   routerto(number,name){
+   routerto(number,name,type){
      this.$router.push({
        name:'TheDetail',
-       params:{id:number, title:name}
+       params:{id:number, title:name,type:type}
      })
    },
     getColorP (priority) {

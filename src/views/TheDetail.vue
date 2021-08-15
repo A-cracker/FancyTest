@@ -11,14 +11,14 @@
     <the-ckeditor ref="editorRef"></the-ckeditor>
     <button @click="setContent">设置内容</button>
     <button @click="getContent">获取内容</button>
-        <p>{{id}}</p>
+        <p>{{id}}</p>{{type}}
     </div>
 </template>
 <script>
 import TheCkeditor from "@/components/TheCkeditor";
 export default{
     name:'TheDetail',
-    props:['id','title'],
+    props:['id','title','type'],
     data:()=>({
 
     }),

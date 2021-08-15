@@ -25,7 +25,7 @@ const routes = [
     component: MyPanel
   },
   {
-    path: '/thedetail/:id',
+    path: '/thedetail/:id/:type',
     name: 'TheDetail',
     component: TheDetail,
     props:true,
