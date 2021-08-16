@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <div v-if="!(path ==='/')">
+    <div v-if="path ==='/'">
     <v-app>
+        <the-right-page/>
+    </v-app>
+    </div>
+    <div v-else-if="path ==='/register'">
+       <v-app>
+        <the-right-page/>
+       </v-app>
+    </div>
+    <div v-else>
+      <v-app>
     <the-navigator></the-navigator>
       <v-main>
         <the-right-page/>
       </v-main>
     </v-app>
-    </div>
-    <div v-else>
-      <v-app>
-        <the-right-page/>
-      </v-app>
     </div>
   </div>
 </template>

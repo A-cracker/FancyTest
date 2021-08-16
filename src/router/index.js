@@ -9,6 +9,7 @@ import TheDetail from '@/views/TheDetail'
 import MyMessage from '@/views/MyMessage'
 import MyProjectList from '@/views/MyProjectList'
 import Login from '@/views/Login'
+import Register from '@/views/Register'
 import MySetting from '@/views/MySetting'
 
 Vue.use(VueRouter)
@@ -18,6 +19,11 @@ const routes = [
     path:'/',
     name:'Login',
     component: Login
+  },
+  {
+    path:'/register',
+    name:'Register',
+    component: Register
   },
   {
     path: '/mypanel',

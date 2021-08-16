@@ -12,37 +12,17 @@
     <v-container fluid>
     <div class="content d-flex flex-row">
     <!--左侧封面图-->
-    <div class="left cover">
+    <v-col cols="1" class="cover">
         <img src="@/assets/cover.png">
-    </div>
-    <!--右侧登录框-->
-    <div class="right flex-grow-1">
-    <v-card class="input-wrap d-flex flex-column" elevation="1" min-width="400px" height="400px" shaped>
-    <v-row
-    align="start">
-    <v-col offset=8>
-    <v-btn
-      @click="to_register"
-      tile
-      color="success">
-      <v-icon left>
-        mdi-pencil
-      </v-icon>
-      还没注册？
-    </v-btn>
     </v-col>
-  </v-row>
-  <v-spacer></v-spacer>
-        <v-row>
-            <v-col cols='3'>
-                <v-subheader>
-                    <img src="@/assets/username.jpeg" height="70" width="70">
-                </v-subheader>
-            </v-col>
-            <v-col cols='8'>
+    <!--右侧登录框-->
+    <v-col offset="3">
+    <v-card class="input-wrap d-flex flex-column" elevation="3" min-width="700px" height="400px" >
+        <v-spacer></v-spacer>
+        <div>
           <v-text-field
             v-model="message"
-            :rules="rules.maxname"
+            :rules="[rules.required,rules.username_max]"
             counter="10"
             hint="名称限定10个字符内"
             label="您的用户名"
@@ -50,33 +30,46 @@
             color="purple darken-2"
             name="username"
           ></v-text-field>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols='3'>
-                <v-subheader>
-                    <img src="@/assets/password.jpeg" height="70" width="70">
-                </v-subheader>
-            </v-col>
-            <v-col cols='8'>
+        </div>
+        <div>
         <v-text-field
-            v-model="password"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min]"
-            :type="show ? 'text' : 'password'"
-            name="password"
+            v-model="password1"
+            :rules="[rules.required, rules.password_min]"
+            :type="'password'"
+            name="password1"
             label="您的密码"
             hint="8个字符以上"
             counter
             clearable
-            @click:append="show = !show"
             color="green darken-2"
           ></v-text-field>
-            </v-col>
+        </div>
+        <div>
+        <v-text-field
+        aria-setsize=""
+            v-model="password2"
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.password_match]"
+            :type="show ? 'text' : 'password'"
+            name="password2"
+            label="请重复您的密码"
+            counter
+            clearable
+            @click:append="show = !show"
+            color="orange darken-2"
+          ></v-text-field>
+        </div>
+        <v-spacer></v-spacer>
+        <v-row>
+        <v-col offset="2">
+        <v-btn color="primary" x-large>注册</v-btn>
+        </v-col>
+        <v-col offset="1">
+        <v-btn @click="back" color="secondary" x-large>返回</v-btn>
+        </v-col>
         </v-row>
-        <v-btn @click="login">登录</v-btn>
     </v-card>
-    </div>
+    </v-col>
     </div>
     </v-container>
     </v-main>
@@ -108,24 +101,19 @@
     data () {
       return {
         show: false,
-        username: 'student',
-        password: '12345678',
         rules: {
-          maxname:v => v.length <= 25 || 'Max 25 characters',
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || '少于8个字符',
-          emailMatch: () => (`用户名或密码错误`),
-        },
+          username_max:v => v.length <= 10 || '最多10个字符',
+          required: value => !!value || '不可为空',
+          password_min: v => v.length >= 8 || '少于8个字符',
+          password_match: value => value===this.password1 || '两次密码不一致'
+        }
       }
     },
     methods : {
-      login() {
-          window.location.href = '/mypanel'
-          },
-      to_register() {
-          window.location.href = '/register'
-          }
-      }
+      back(){
+        this.$router.go(-1)//返回上一层
+    },
+  }
   }
 </script>
 
