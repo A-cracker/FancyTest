@@ -12,64 +12,56 @@
     <v-container fluid>
     <div class="content d-flex flex-row">
     <!--左侧封面图-->
-    <v-col cols="1" class="cover">
+    <div class="left cover">
         <img src="@/assets/cover.png">
-    </v-col>
-    <!--右侧登录框-->
-    <v-col offset="3">
-    <v-card class="input-wrap d-flex flex-column" elevation="3" min-width="700px" height="400px" >
-        <v-spacer></v-spacer>
+    </div>
+    <!--右侧注册框-->
+    <div class="right flex-grow-1">
+    <v-card class="input-wrap d-flex flex-column align-center justify-center" elevation="1" min-width="400px" height="400px" shaped>
+      <h1 class="font-weight-regular cardTitle" style="font-size:40PX;">REGISTER</h1>
         <div>
           <v-text-field
             v-model="message"
             :rules="[rules.required,rules.username_max]"
             counter="10"
             hint="名称限定10个字符内"
-            label="您的用户名"
+            prepend-icon="mdi-account"
+            label="请输入您的学号"
             clearable
-            color="purple darken-2"
             name="username"
           ></v-text-field>
-        </div>
-        <div>
         <v-text-field
+            aria-setsize=""
             v-model="password1"
-            :rules="[rules.required, rules.password_min]"
-            :type="'password'"
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.password_match]"
+            :type="show ? 'text' : 'password'"
+            prepend-icon="mdi-key"
             name="password1"
-            label="您的密码"
-            hint="8个字符以上"
+            label="请输入您的密码"
             counter
             clearable
-            color="green darken-2"
+            @click:append="show = !show"
           ></v-text-field>
-        </div>
-        <div>
         <v-text-field
-        aria-setsize=""
+            aria-setsize=""
             v-model="password2"
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.password_match]"
             :type="show ? 'text' : 'password'"
+            prepend-icon="mdi-key"
             name="password2"
             label="请重复您的密码"
             counter
             clearable
             @click:append="show = !show"
-            color="orange darken-2"
           ></v-text-field>
         </div>
-        <v-spacer></v-spacer>
-        <v-row>
-        <v-col offset="2">
-        <v-btn color="primary" x-large>注册</v-btn>
-        </v-col>
-        <v-col offset="1">
-        <v-btn @click="back" color="secondary" x-large>返回</v-btn>
-        </v-col>
-        </v-row>
+        <div class="btn">
+          <v-btn @click="login" dark>注册</v-btn> <span style="font-size:5px;margin-left:10px;"><a @click="back">已有账号？</a></span>
+        </div>
     </v-card>
-    </v-col>
+    </div>
     </div>
     </v-container>
     </v-main>
@@ -134,6 +126,12 @@
     margin-top: 70px;
     margin-left: 80px;
     margin-right: 200px;
+}
+.btn{
+  margin-top: 20px;
+}
+.cardTitle{
+  margin-bottom: 20px;
 }
 @media (max-width:1200px) {
     .cover{

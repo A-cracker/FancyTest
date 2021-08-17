@@ -17,64 +17,42 @@
     </div>
     <!--右侧登录框-->
     <div class="right flex-grow-1">
-    <v-card class="input-wrap d-flex flex-column" elevation="1" min-width="400px" height="400px" shaped>
-    <v-row
-    align="start">
-    <v-col offset=8>
-    <v-btn
-      @click="to_register"
-      tile
-      color="success">
-      <v-icon left>
-        mdi-pencil
-      </v-icon>
-      还没注册？
-    </v-btn>
-    </v-col>
-  </v-row>
-  <v-spacer></v-spacer>
-        <v-row>
-            <v-col cols='3'>
-                <v-subheader>
-                    <img src="@/assets/username.jpeg" height="70" width="70">
-                </v-subheader>
-            </v-col>
-            <v-col cols='8'>
+    <v-card class="input-wrap d-flex flex-column align-center justify-center" elevation="1" min-width="400px" height="400px" shaped>
+          <h1 class="font-weight-regular cardTitle" style="font-size:40PX;">LOGIN</h1>
+          <div>
           <v-text-field
+            filled
+            solo
             v-model="message"
             :rules="rules.maxname"
             counter="10"
             hint="名称限定10个字符内"
+            prepend-icon="mdi-account"
             label="您的用户名"
             clearable
-            color="purple darken-2"
             name="username"
           ></v-text-field>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols='3'>
-                <v-subheader>
-                    <img src="@/assets/password.jpeg" height="70" width="70">
-                </v-subheader>
-            </v-col>
-            <v-col cols='8'>
+            
         <v-text-field
+            filled
+            solo
             v-model="password"
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.required, rules.min]"
             :type="show ? 'text' : 'password'"
             name="password"
             label="您的密码"
+            prepend-icon="mdi-lock"
             hint="8个字符以上"
             counter
             clearable
             @click:append="show = !show"
-            color="green darken-2"
           ></v-text-field>
-            </v-col>
-        </v-row>
-        <v-btn @click="login">登录</v-btn>
+          </div>
+          <div class="btn">
+          <v-btn @click="login">登录</v-btn> <span style="font-size:5px;margin-left:10px;"><a @click="to_register">还未注册？</a></span>
+          </div>
+
     </v-card>
     </div>
     </div>
@@ -109,7 +87,7 @@
       return {
         show: false,
         username: 'student',
-        password: '12345678',
+        password: '',
         rules: {
           maxname:v => v.length <= 25 || 'Max 25 characters',
           required: value => !!value || 'Required.',
@@ -146,6 +124,12 @@
     margin-top: 70px;
     margin-left: 80px;
     margin-right: 200px;
+}
+.btn{
+  margin-top: 20px;
+}
+.cardTitle{
+  margin-bottom: 20px;
 }
 @media (max-width:1200px) {
     .cover{
