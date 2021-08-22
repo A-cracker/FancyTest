@@ -1,8 +1,16 @@
 <template>
-<div>报表</div>
+<div>
+    <the-ckeditor></the-ckeditor>
+</div>
 </template>
 <script>
+import TheCkeditor from './TheCkeditor.vue'
 export default{
-    name:"TheChart"
+components: { TheCkeditor },
+name:"TheChart",
+data:()=>({
+
+}),
+
 }
 </script>

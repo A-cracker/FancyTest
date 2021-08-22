@@ -8,7 +8,7 @@
         </v-toolbar-title>
       <v-spacer></v-spacer>
 
-    <the-ckeditor ref="editorRef"></the-ckeditor>
+    <the-ckeditor :editconfig="config" ref="editorRef"></the-ckeditor>
     <button @click="setContent">设置内容</button>
     <button @click="getContent">获取内容</button>
         <p>{{id}}</p>{{type}}
@@ -16,16 +16,32 @@
 </template>
 <script>
 import TheCkeditor from "@/components/TheCkeditor";
+import {initDetail} from "@/request/api"
 export default{
     name:'TheDetail',
-    props:['id','title','type'],
+    props:['id','type'],
     data:()=>({
-
+      title:'',
+      config:{
+      toolbar: ['heading','|','bold','italic','Link','bulletedList','numberedList','blockQuote','|','undo','redo',],
+      placeholder:'请输入内容',
+      language: 'zh-cn',
+      ckfinder: {
+        uploadUrl: '/'
+      }
+    }
+      
     }),
     components:{
       TheCkeditor
     },
-    mounted:{
+    mounted(){
+      initDetail(this.id,this.type).then(
+        res=>{
+          //标题名
+          this.title=res.title
+        }
+      )
     },
     methods: {
       setContent(){
