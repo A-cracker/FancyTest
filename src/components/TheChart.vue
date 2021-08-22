@@ -1,6 +1,6 @@
 <template>
 <div>
-    <the-ckeditor></the-ckeditor>
+    <the-ckeditor :editconfig="config"></the-ckeditor>
 </div>
 </template>
 <script>
@@ -9,7 +9,13 @@ export default{
 components: { TheCkeditor },
 name:"TheChart",
 data:()=>({
-
+     config:{
+      placeholder:'请输入内容',
+      language: 'zh-cn',
+      ckfinder: {
+        uploadUrl: '/'
+      }
+     }
 }),
 
 }

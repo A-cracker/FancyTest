@@ -302,7 +302,7 @@ color="#ECEFF1"
 
     <template v-slot:[`item.title`]="{ item }">
      
-      <a @click="routerto(item.id,item.title,item.type)">{{item.title}}</a>
+      <a @click="routerto(item.id,item.type)">{{item.title}}</a>
     </template>
     </v-data-table>
 
@@ -495,10 +495,10 @@ export default{
     },
 
  methods: {
-   routerto(number,name,type){
+   routerto(number,type){
      this.$router.push({
        name:'TheDetail',
-       params:{id:number, title:name,type:type}
+       params:{id:number, type:type}
      })
    },
     getColorP (priority) {

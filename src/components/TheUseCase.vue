@@ -223,7 +223,7 @@ style="font-size:14px;"></v-treeview>
 
     <template v-slot:[`item.title`]="{ item }">
      
-      <a @click="routerto(item.id,item.title)">{{item.title}}</a>
+      <a @click="routerto(item.id,item.type)">{{item.title}}</a>
     </template>
     </v-data-table>
 
@@ -309,7 +309,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'usecase'
           },
           {
             id: 2,
@@ -319,87 +320,8 @@ export default{
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 3,
-            title: '用例3',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 4,
-            title: '用例2',
-            status:'未执行',
-            priority:'MIDDLE',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 5,
-           title: '用例3',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 6,
-           title: '用例6',
-            status:'已实现',
-            priority:'MIDDLE',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 7,
-         title: '用例7',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-           {
-            id: 8,
-            title: '用例1',
-            status:'已执行',
-            priority:'LOW',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-          {
-            id: 9,
-           title: '用例2',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
-          },
-           {
-            id: 10,
-           title: '用例10',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20'
+            end:'2021-3-20',
+            type:'usecase'
           },
         ],
 
@@ -418,10 +340,10 @@ export default{
     },
 
  methods: {
-   routerto(number,name){
+   routerto(number,type){
      this.$router.push({
        name:'TheDetail',
-       params:{id:number, title:name}
+       params:{id:number, type:type}
      })
    },
     getColorP (priority) {
