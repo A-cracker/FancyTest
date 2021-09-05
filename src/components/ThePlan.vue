@@ -263,10 +263,22 @@ color="#ECEFF1"
         </v-card>
       </v-dialog>
 
-
-      <v-btn icon>
-        <v-icon small>mdi-filter-menu-outline</v-icon>
-      </v-btn>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+         <v-btn icon
+          v-bind="attrs"
+          v-on="on"><v-icon small>mdi-filter-menu-outline</v-icon></v-btn>
+      </template>
+      <v-list>
+        <v-list-item dense link
+          v-for="(item, index) in ['缺陷','执行','用例','需求']"
+          :key="index"
+          @click="fliter(item)"
+        >
+          <v-list-item-subtitle>{{ item }}</v-list-item-subtitle>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     </v-toolbar>
   </v-card>
 

@@ -7,23 +7,37 @@
     </v-toolbar>
     <v-divider></v-divider>
     <v-tabs>
-    <v-tab>待办项目</v-tab>
-    <v-tab>完成项目</v-tab>
+    <v-tab @click="changeProjectList()">待办项目</v-tab>
+    <v-tab @click="changeProjectList()">完成项目</v-tab>
   </v-tabs>
 
-  <div class="d-flex justify-start flex-wrap">
+  <div class="d-flex justify-start flex-wrap flex-row">
+            <v-card v-show="show1"
+            class="pro"
+            min-width="180px"
+            max-width="180px"
+            v-for="project in projectList"
+            :key="project.id"
+            @click="routerto(project.projectId)"
+            >
+            <img :src= project.url class="pic">
+            <span style="margin-left:5px;">{{project.name}}</span>
+            </v-card>
+          
+            <v-card v-show="show2"
+            class="pro"
+            min-width="180px"
+            max-width="180px"
+            v-for="project in projectList2"
+            :key="project.id"
+            @click="routerto(project.projectId)"
+            >
+            <img :src= project.url class="pic">
+            <span style="margin-left:5px;">{{project.name}}</span>
+            </v-card>
+
           <v-card
-          class="pro"
-          min-width="180px"
-          max-width="180px"
-          v-for="project in projectList"
-          :key="project.id"
-          @click="routerto(project.id)"
-          >
-          <img :src= project.url class="pic">
-          <span style="margin-left:5px;">{{project.name}}</span>
-          </v-card> 
-          <v-card
+          v-show="show1"
           class="pro"
           min-width="180px"
           max-width="180px"
@@ -32,6 +46,7 @@
           <img src="@/assets/添加.png" class="pic">
           <span style="margin-left:5px;">创建项目</span>
           </v-card>
+
           <v-dialog v-model=createDialog max-width="500px">
               <v-card>
           <v-card-title>
@@ -70,15 +85,14 @@
             <v-btn
               color="primary"
               text
-              @click="createDialog = false"
+              @click="createProject()"
             >
               确认创建
             </v-btn>
           </v-card-actions>
         </v-card>
-          </v-dialog>
+        </v-dialog>
   </div>
-
 </div>
 </template>
 <script>
@@ -86,10 +100,21 @@ export default{
     data:()=>({
         createDialog:false,
         projectList:[
-            {id:1,name:'项目1',url:require("@/assets/img3.jpg")},
-            {id:2,name:'项目2',url:require("@/assets/img3.jpg")},
-           ],
+          {projectId:1,name:'项目1',url:require("@/assets/img3.jpg")},
+          {projectId:2,name:'项目2',url:require("@/assets/img3.jpg")},
+        ],
+        show1:true,
+        projectList2:[
+          {projectId:1,name:'项目3',url:require("@/assets/img3.jpg")},
+        ],
+        show2:false,
     }),
+    mounted:{
+      //初始化项目列表projectList和projectList2
+    },
+    watch:{
+
+    },
     methods:{
         routerto(number){
             this.$router.push({
@@ -97,6 +122,14 @@ export default{
                 params:{id:number}
             })
         },
+        changeProjectList(){
+          this.show1=!this.show1
+          this.show2=!this.show2
+        },
+        createProject(){
+          this.createDialog = false
+          this.projectList.push({projectId:1,name:'项目3',url:require("@/assets/img3.jpg")})
+        }
     }
 }
 </script>
