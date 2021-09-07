@@ -42,6 +42,33 @@
     <div class="font-weight-light">请点击左上角的“新建”按钮添加</div>
     </div>
       </div>
+    <div v-else>
+      <v-data-table
+      :show-select="selectable"
+      :headers="headers"
+      :items="listItems"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      class="elevation-1"
+      @page-count="pageCount = $event"
+    >
+
+    <template v-slot:[`item.title`]="{ item }">
+      <v-icon v-if="item.type=='word'" color="primary" large>mdi-file-word-outline</v-icon>
+      <v-icon v-if="item.type=='pdf'" color="error" large>mdi-file-pdf-outline</v-icon>
+      <v-icon v-if="item.type=='pic'" color="grey" large>mdi-image-outline</v-icon>
+      <a @click="routerto(item.id,item.type)" style="font-size:13px;">{{item.title}}</a>
+    </template>
+    </v-data-table>
+
+    <div class="text-center pt-2">
+      <v-pagination
+        v-model="page"
+        :length="pageCount"
+      ></v-pagination>
+    </div>
+    </div>
   </v-card>
 <!--列表-->
   </div>
@@ -58,14 +85,51 @@
 export default{
 name:"TheDoc",
 data: () => ({
-    count:0,
+    count:1,
+    selectable:true,
+    page: 1,
+        pageCount: 0,
+        itemsPerPage: 9,
+          headers: [
+          { text: '标题', value: 'title'},
+          { text: '创建人', value: 'creator'},
+          { text: '最近修改时间', value: 'date'},
+        ],
+        listItems: [
+          {
+            id: 1,
+            title: '需求文档',
+            creator: '小王',
+            date: '2021-2-15',
+            type:'word'
+          },
+          {
+            id: 2,
+            title: '文档1',
+            creator: '小王',
+            date: '2021-2-15',
+            type:'pic'
+          },
+          {
+            id: 3,
+            title: '文档2',
+            creator: '小王',
+            date: '2021-2-15',
+            type:'pdf'
+          },
+        ],
 }),
 
 watch: {
 },
 
 methods: {
-
+routerto(number,type){
+     this.$router.push({
+       name:'TheDetail',
+       params:{id:number, type:type}
+     })
+   },
 }
 
 }
@@ -95,4 +159,5 @@ methods: {
 .placeholder{
     height: 100%;
 }
+a:link {color: #424242}
 </style>

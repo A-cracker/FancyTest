@@ -114,10 +114,45 @@
         </v-card-title>
         <v-card-text>
           <v-list subheader>
-            <v-subheader> 项目目标：</v-subheader>
+            <v-subheader> 项目内容：</v-subheader>
             <v-list-item>{{project.projectObject}}</v-list-item>
           <v-subheader>项目成员：</v-subheader>
-
+        <div style="position:relative;overflow:hidden;">
+        <div class="list">
+          <v-list-item>
+              <v-list-item-avatar>
+              <v-img
+              alt="avatar"
+              src="@/assets/img.jpg"
+              ></v-img>
+              </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>五条悟（管理员）</v-list-item-title>
+            <v-list-item-subtitle>ID:001</v-list-item-subtitle>
+          </v-list-item-content>
+        <v-list-item-icon>
+          <v-btn icon>
+          <v-icon>mdi-account-minus-outline</v-icon>
+          </v-btn>
+        </v-list-item-icon>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-avatar>
+              <v-img
+              alt="avatar"
+              src="@/assets/img.jpg"
+              ></v-img>
+              </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>五条悟（管理员）</v-list-item-title>
+            <v-list-item-subtitle>ID:001</v-list-item-subtitle>
+          </v-list-item-content>
+        <v-list-item-icon>
+          <v-btn icon>
+          <v-icon>mdi-account-minus-outline</v-icon>
+          </v-btn>
+        </v-list-item-icon>
+            </v-list-item>
           <v-list-item>
               <v-list-item-avatar>
               <v-img
@@ -153,14 +188,52 @@
           </v-btn>
         </v-list-item-icon>
             </v-list-item>
-
+        </div>
+        </div>
         </v-list>
         </v-card-text>
+    <v-divider></v-divider>
+      <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-dialog
+      v-model="dialog3"
+      width="500"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text
+          v-bind="attrs"
+          v-on="on"
+          color="error"
+          @click="dialog2= false,dialog3= true"
+        >
+          删除项目
+        </v-btn>
+      </template>
 
-<v-divider></v-divider>
-
+      <v-card>
+        <v-card-title>
+          删除项目
+        </v-card-title>
+        <v-card-text>你将永久删除此项目,确认删除项目吗？</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog3=false,dialog2= true"
+          >
+            取消
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog3= false"
+          >
+            确认
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
           <v-btn
             color="primary"
             text
@@ -171,7 +244,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
+    
     </v-toolbar>
 
         <component :is="currentItem" class="root"
@@ -202,6 +275,7 @@ import TheChart from '@/components/TheChart';
       },
       dialog: false,
       dialog2:false,
+      dialog3:false,
       currentItem: 'ThePlan',
       inviteResponse:'',//邀请响应,true or false
       items: [
@@ -233,5 +307,9 @@ import TheChart from '@/components/TheChart';
 <style scoped>
 .root{
   height: 100%;
+}
+.list{
+  overflow: auto;
+  height:200px;
 }
 </style>

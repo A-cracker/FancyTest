@@ -2,7 +2,7 @@
 <template>
     <div class="root d-flex flex-column">
       <v-toolbar-title> 
-        <v-btn icon @click="$router.back(-1)">
+        <v-btn icon @click="$router.go(-1)">
         <v-icon>mdi-keyboard-backspace</v-icon>
         </v-btn>
         {{title}}

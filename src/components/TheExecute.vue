@@ -206,7 +206,7 @@ style="font-size:14px;"></v-treeview>
 
   <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
-      
+      :show-select="selectable"
       :headers="headers"
       :items="listItems"
       :page.sync="page"

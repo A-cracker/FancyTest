@@ -161,7 +161,7 @@ color="#ECEFF1"
     <v-btn icon>
         <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
-    <v-btn icon @click="hidden=!hidden">
+    <v-btn icon @click="hidden=!hidden,selectable=!selectable">
         <v-icon>mdi-delete</v-icon>
     </v-btn>
     </v-toolbar>
@@ -173,21 +173,12 @@ color="#ECEFF1"
  <!--选项卡--> 
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px">
 <v-tabs vertical>
-      <v-tab>
-        迭代1
+      <v-tab 
+      v-for="item in 3"
+      :key="item">
+        <v-checkbox v-show="selectable"></v-checkbox>
+        迭代xxx
         <v-btn icon>
-        <v-icon small>mdi-chevron-double-right</v-icon>
-        </v-btn>
-      </v-tab>
-      <v-tab>
-        迭代2
-         <v-btn icon>
-        <v-icon small>mdi-chevron-double-right</v-icon>
-        </v-btn>
-      </v-tab>
-      <v-tab>
-        迭代3
-         <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
         </v-btn>
       </v-tab>
@@ -284,7 +275,7 @@ color="#ECEFF1"
 
   <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
-      
+      :show-select="selectable"
       :headers="headers"
       :items="listItems"
       :page.sync="page"
@@ -346,7 +337,7 @@ export default{
         value => (value && value.length >= 2) || '至少输入一个字符',
       ],
 
-      
+      selectable:false,
       date1: new Date().toISOString().substr(0, 10),
       date2: new Date().toISOString().substr(0, 10),
   
