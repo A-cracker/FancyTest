@@ -17,8 +17,9 @@
           <v-tab
             v-for="item in items"
             :key="item"
+            link
             :href="'#tab-' + item.text"
-            @click='currentItem=item.util'
+            :to="'/myproject/'+ id +'/'+ item.route"
           >
             <span class="font-weight-light">{{ item.text }}</span>
           </v-tab>
@@ -247,8 +248,7 @@
     
     </v-toolbar>
 
-        <component :is="currentItem" class="root"
-        ></component>
+        <router-view></router-view>
 
 </div>
 
@@ -256,13 +256,6 @@
 </template>
 
 <script>
-import ThePlan from '@/components/ThePlan';
-import TheRequirement from '@/components/TheRequirement';
-import TheUseCase from '@/components/TheUseCase';
-import TheExecute from '@/components/TheExecute';
-import TheBug from '@/components/TheBug';
-import TheDoc from '@/components/TheDoc';
-import TheChart from '@/components/TheChart';
 
  export default {
     props:['id'],
@@ -279,23 +272,16 @@ import TheChart from '@/components/TheChart';
       currentItem: 'ThePlan',
       inviteResponse:'',//邀请响应,true or false
       items: [
-        {text:'计划',util:"ThePlan"}, 
-        {text:'需求',util:"TheRequirement"}, 
-        {text:'用例',util:"TheUseCase"}, 
-        {text:'执行',util:"TheExecute"},
-        {text:'缺陷',util:"TheBug"},
-        {text:'文档',util:"TheDoc"},
-        {text:'报表',util:"TheChart"},
+        {text:'计划',util:"ThePlan",route:'theplan'}, 
+        {text:'需求',util:"TheRequirement",route:'thereq'}, 
+        {text:'用例',util:"TheUseCase",route:'theusecase'}, 
+        {text:'执行',util:"TheExecute",route:'theexecute'},
+        {text:'缺陷',util:"TheBug",route:'thebug'},
+        {text:'文档',util:"TheDoc",route:'thedoc'},
+        {text:'报表',util:"TheChart",route:'thechart'},
       ],
     }),
     components: {
-        ThePlan,
-        TheRequirement,
-        TheUseCase,
-        TheExecute,
-        TheBug,
-        TheDoc,
-        TheChart
     },
   created(){
     

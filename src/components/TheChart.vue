@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="root">
     <the-ckeditor :editconfig="config"></the-ckeditor>
 </div>
 </template>
@@ -20,3 +20,8 @@ data:()=>({
 
 }
 </script>
+<style scoped>
+.root{
+  height: 100%;
+}
+</style>

@@ -11,7 +11,13 @@ import MyProjectList from '@/views/MyProjectList'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import MySetting from '@/views/MySetting'
-
+import ThePlan from '@/components/ThePlan';
+import TheRequirement from '@/components/TheRequirement';
+import TheUseCase from '@/components/TheUseCase';
+import TheExecute from '@/components/TheExecute';
+import TheBug from '@/components/TheBug';
+import TheDoc from '@/components/TheDoc';
+import TheChart from '@/components/TheChart';
 Vue.use(VueRouter)
 
 const routes = [
@@ -48,7 +54,18 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: MyProject,
-    props:true
+    props:true,
+    redirect:'/myproject/:id/theplan',
+    children:[
+      {path:'',redirect:'theplan'},
+      {path:'theplan',component:ThePlan},
+      {path:'thereq',component:TheRequirement},
+      {path:'thebug',component:TheBug},
+      {path:'theusecase',component:TheUseCase},
+      {path:'theexecute',component:TheExecute},
+      {path:'thechart',component:TheChart},
+      {path:'thedoc',component:TheDoc}
+    ]
   },
   {
     path: '/myprojectlist',
