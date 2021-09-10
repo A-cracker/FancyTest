@@ -58,7 +58,7 @@
           <div style="display:none;" id="account">
              <p class="font-weight-medium title">账号管理</p>
              <v-divider></v-divider>
-            <v-btn dark class="btn" style="margin-top:10px;">退出登录</v-btn>
+            <v-btn dark class="btn" style="margin-top:10px;" @click="Logout">退出登录</v-btn>
           </div>
 
         </div>
@@ -97,9 +97,15 @@ export default{
         default:
           break;
       }
+    },
+    Logout(){
+      window.sessionStorage.removeItem("Token");
+      window.location.href = '/';
     }
+
   }
 }
+
 </script>
 <style scoped>
 .btn{

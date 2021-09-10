@@ -23,10 +23,9 @@
           <v-text-field
             filled
             solo
-            v-model="message"
-            :rules="rules.maxname"
-            counter="10"
-            hint="名称限定10个字符内"
+            v-model="username"
+            counter="20"
+            hint="名称限定20个字符内"
             prepend-icon="mdi-account"
             label="您的用户名"
             clearable
@@ -50,7 +49,7 @@
           ></v-text-field>
           </div>
           <div class="btn">
-          <v-btn @click="login">登录</v-btn> <span style="font-size:5px;margin-left:10px;"><a @click="to_register">还未注册？</a></span>
+          <v-btn @click="login">登录</v-btn> <span style="font-size:5px;margin-left:10px;"><a @click="toRegister">还未注册？</a></span>
           </div>
 
     </v-card>
@@ -82,15 +81,15 @@
 </template>
 
 <script>
+  import {getToken} from '@/request/api'
   export default {
     data () {
       return {
         show: false,
-        username: 'student',
+        username: '',
         password: '',
         rules: {
-          maxname:v => v.length <= 25 || 'Max 25 characters',
-          required: value => !!value || 'Required.',
+          required: value => !!value || '必填',
           min: v => v.length >= 8 || '少于8个字符',
           emailMatch: () => (`用户名或密码错误`),
         },
@@ -98,9 +97,24 @@
     },
     methods : {
       login() {
-          window.location.href = '/mypanel'
-          },
-      to_register() {
+          getToken(this.username,this.password).then(res=>{
+            if(res.id)
+            {
+            var token=res.jwt
+             window.sessionStorage.setItem("Token",token)//保存到本地
+              this.$notify({
+                  type: "success",
+                  message: "欢迎你," + this.user.name + "!",
+                  duration: 3000 });
+            }
+           else 
+          { this.$message({
+            type: "error",
+            message: "用户名或密码错误",
+            showClose: true })
+          // window.location.href = '/mypanel'
+          }})},
+      toRegister() {
           window.location.href = '/register'
           }
       }

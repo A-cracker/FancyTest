@@ -11,11 +11,15 @@ Vue.prototype.$ajax=axios
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    token:""
   },
   mutations: {
     increment (state) {
       state.count++
+    },
+    saveToken(state, data) {//将 token 保存
+      state.token = data;
     }
   }
 })
@@ -27,4 +31,6 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+
+export default store;
          

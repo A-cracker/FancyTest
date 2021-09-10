@@ -24,12 +24,18 @@ const routes = [
   {
     path:'/',
     name:'Login',
-    component: Login
+    component: Login,
+    meta: {
+      noAuth: true // 添加该字段，表示进入这个路由是需要登录的
+}
   },
   {
     path:'/register',
     name:'Register',
-    component: Register
+    component: Register,
+    meta: {
+      noAuth: true // 添加该字段，表示进入这个路由是需要登录的
+}
   },
   {
     path: '/mypanel',
@@ -40,7 +46,7 @@ const routes = [
     path: '/thedetail/:id/:type',
     name: 'TheDetail',
     component: TheDetail,
-    props:true,
+    props:true
   },
   {
     path: '/mymessage',
@@ -85,7 +91,7 @@ const routes = [
   {
     path: '/mytodo',
     name: 'MyToDo',
-    component: MyToDo 
+    component: MyToDo
   },
   {
     path: '/mysetting',
@@ -99,5 +105,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+// router.beforeEach((to, _from, next) => { if (!to.meta.noAuth) {  // 判断该路由是否需要登录权限
+//   if (window.sessionStorage.Token) { 
+// next();
+//   } else {
+//       next({
+//           path: '/',
+//           query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+// })
+//   }
+// } else {
+//   next();
+// }
+// })
 
 export default router
