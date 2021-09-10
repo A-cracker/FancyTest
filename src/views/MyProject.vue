@@ -248,7 +248,7 @@
     
     </v-toolbar>
 
-        <router-view></router-view>
+        <router-view :id="id"></router-view>
 
 </div>
 

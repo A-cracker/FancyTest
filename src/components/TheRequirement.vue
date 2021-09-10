@@ -262,6 +262,7 @@ style="font-size:14px;"></v-treeview>
 
 export default{
     name:"TheRequirement",
+    props:['id'],
     data: () => ({
       rules: [
         value => !!value || '需求名称不能为空',

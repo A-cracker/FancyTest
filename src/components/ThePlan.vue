@@ -331,6 +331,7 @@ color="#ECEFF1"
 
 export default{
     name:"ThePlan",
+    props:['id'],
     data: () => ({
       rules: [
         value => !!value || '迭代名称不能为空',

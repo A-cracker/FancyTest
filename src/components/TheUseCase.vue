@@ -263,6 +263,7 @@ style="font-size:14px;"></v-treeview>
 
 export default{
     name:"TheUseCase",
+    props:['id'],
     data: () => ({
       rules: [
         value => !!value || '用例名称不能为空',

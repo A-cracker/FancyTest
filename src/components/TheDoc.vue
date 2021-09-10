@@ -13,6 +13,9 @@
     <v-btn dark class="mx-3">
       上传
     </v-btn>
+    <v-btn dark>
+      删除
+    </v-btn>
     <v-spacer></v-spacer>
     </v-toolbar>
 </div>
@@ -27,10 +30,10 @@
 <!--工具栏-->
   <v-card class="nav">
         <v-tabs height="45">
-        <v-tab>所有文件</v-tab>
-        <v-tab>图片</v-tab>
-        <v-tab>文档</v-tab>
-        <v-tab>文件夹</v-tab>
+        <v-tab v-for="item in tabs"
+        :key="item">
+        {{item.title}}
+        </v-tab>
         </v-tabs>
   </v-card>
 
@@ -57,7 +60,8 @@
     <template v-slot:[`item.title`]="{ item }">
       <v-icon v-if="item.type=='word'" color="primary" large>mdi-file-word-outline</v-icon>
       <v-icon v-if="item.type=='pdf'" color="error" large>mdi-file-pdf-outline</v-icon>
-      <v-icon v-if="item.type=='pic'" color="grey" large>mdi-image-outline</v-icon>
+      <v-icon v-if="item.type=='pic'" color="dark" large>mdi-image-outline</v-icon>
+      <v-icon v-if="item.type=='folder'" color="orange darken-2" large>mdi-folder-open</v-icon>
       <a @click="routerto(item.id,item.type)" style="font-size:13px;">{{item.title}}</a>
     </template>
     </v-data-table>
@@ -85,6 +89,12 @@
 export default{
 name:"TheDoc",
 data: () => ({
+    tabs:[
+      {title:'所有文件'},
+      {title:'图片'},
+      {title:'文件'},
+      {title:'文件夹'},
+    ],
     count:1,
     selectable:true,
     page: 1,
@@ -105,17 +115,24 @@ data: () => ({
           },
           {
             id: 2,
-            title: '文档1',
+            title: '图片',
             creator: '小王',
             date: '2021-2-15',
             type:'pic'
           },
           {
             id: 3,
-            title: '文档2',
+            title: 'pdf',
             creator: '小王',
             date: '2021-2-15',
             type:'pdf'
+          },
+          {
+            id: 4,
+            title: '文件夹',
+            creator: '小王',
+            date: '2021-2-15',
+            type:'folder'
           },
         ],
 }),

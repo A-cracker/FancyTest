@@ -262,6 +262,7 @@ style="font-size:14px;"></v-treeview>
 
 export default{
     name:"TheBug",
+    props:['id'],
     data: () => ({
       rules: [
         value => !!value || '缺陷名称不能为空',

@@ -8,6 +8,7 @@ import TheCkeditor from './TheCkeditor.vue'
 export default{
 components: { TheCkeditor },
 name:"TheChart",
+props:['id'],
 data:()=>({
      config:{
       placeholder:'请输入内容',

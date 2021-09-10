@@ -262,6 +262,7 @@ style="font-size:14px;"></v-treeview>
 
 export default{
     name:"TheExecute",
+    props:['id'],
     data: () => ({
       rules: [
         value => !!value || '执行名称不能为空',
