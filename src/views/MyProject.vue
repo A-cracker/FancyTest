@@ -74,6 +74,7 @@
             hint="请填写成员的ID"
             label="成员ID"
             placeholder="007"
+            v-model="project.addMemArray"
           ></v-combobox>
           </v-card-text>
           <v-card-actions>
@@ -88,7 +89,7 @@
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="dialog = false,addMem(project.addMemArray)"
             >
               确认邀请
             </v-btn>
@@ -120,68 +121,16 @@
           <v-subheader>项目成员：</v-subheader>
         <div style="position:relative;overflow:hidden;">
         <div class="list">
-          <v-list-item>
+          <v-list-item v-for="item in project.members" :key="item.id">
               <v-list-item-avatar>
               <v-img
               alt="avatar"
-              src="@/assets/img.jpg"
+              :src ="item.avatar"
               ></v-img>
               </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>五条悟（管理员）</v-list-item-title>
-            <v-list-item-subtitle>ID:001</v-list-item-subtitle>
-          </v-list-item-content>
-        <v-list-item-icon>
-          <v-btn icon>
-          <v-icon>mdi-account-minus-outline</v-icon>
-          </v-btn>
-        </v-list-item-icon>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-avatar>
-              <v-img
-              alt="avatar"
-              src="@/assets/img.jpg"
-              ></v-img>
-              </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>五条悟（管理员）</v-list-item-title>
-            <v-list-item-subtitle>ID:001</v-list-item-subtitle>
-          </v-list-item-content>
-        <v-list-item-icon>
-          <v-btn icon>
-          <v-icon>mdi-account-minus-outline</v-icon>
-          </v-btn>
-        </v-list-item-icon>
-            </v-list-item>
-          <v-list-item>
-              <v-list-item-avatar>
-              <v-img
-              alt="avatar"
-              src="@/assets/img.jpg"
-              ></v-img>
-              </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>五条悟（管理员）</v-list-item-title>
-            <v-list-item-subtitle>ID:001</v-list-item-subtitle>
-          </v-list-item-content>
-        <v-list-item-icon>
-          <v-btn icon>
-          <v-icon>mdi-account-minus-outline</v-icon>
-          </v-btn>
-        </v-list-item-icon>
-            </v-list-item>
-
-          <v-list-item>
-              <v-list-item-avatar>
-              <v-img
-              alt="avatar"
-              src="@/assets/img2.jpg"
-              ></v-img>
-              </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>悠仁（普通成员）</v-list-item-title>
-            <v-list-item-subtitle>ID:002</v-list-item-subtitle>
+            <v-list-item-title>{{ item.name }}（管理员）</v-list-item-title>
+            <v-list-item-subtitle>ID:{{ item.id }}</v-list-item-subtitle>
           </v-list-item-content>
         <v-list-item-icon>
           <v-btn icon>
@@ -256,6 +205,7 @@
 </template>
 
 <script>
+import {inviteMem} from '@/request/api'
 
  export default {
     props:['id'],
@@ -263,7 +213,10 @@
       project:{
         projectObject:"对项目XXXX进行测试",
         members:[
-          {name:"",ID:"",avatar:""}
+
+        ],
+        addMemArray:[
+          
         ]
       },
       dialog: false,
@@ -283,6 +236,16 @@
     }),
     components: {
     },
+    methods:{
+    addMem(array){
+      //判断是否重复，以及学号是否符合要求
+      inviteMem(array).then(res=>{//res返回新成员数组
+        this.project.members=this.project.members.concat(res)
+        })
+      //如果符合则添加到现有的成员数组中
+      //将addMemArray数组清空
+    }
+  },
   created(){
     
   },
@@ -296,6 +259,6 @@
 }
 .list{
   overflow: auto;
-  height:200px;
+  height:150px;
 }
 </style>

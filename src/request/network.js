@@ -4,7 +4,8 @@ import router from '../router/index.js';
 // axios.defaults.baseURL ='https://www.fastmock.site/mock/df6a9659a720f5eb98239a76d22a627c/userinfo';
 // axios.defaults.baseURL ='https://www.fastmock.site/mock/3d56efeb34bea8eabd32d551d02f8003/ft';
 // axios.defaults.baseURL ='http://backend.fancytest.cn:30000/api';
-axios.defaults.baseURL = '/api';
+// axios.defaults.baseURL = '/api';
+axios.defaults.baseURL ='https://www.fastmock.site/mock/fa656ee7796127dc5c324ad4513f2ab0/test';axios.defaults.baseURL ='https://www.fastmock.site/mock/fa656ee7796127dc5c324ad4513f2ab0/test';
 // 请求响应超时时间
 axios.defaults.timeout = 5000;
 

@@ -115,7 +115,8 @@
           // window.location.href = '/mypanel'
           }})},
       toRegister() {
-          window.location.href = '/register'
+          // window.location.href = '/register'
+          window.location.href = '/mypanel'//后端未完成前的入口
           }
       }
   }
