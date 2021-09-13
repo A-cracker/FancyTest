@@ -1,5 +1,5 @@
 <template>
-<div class="d-flex flex-column root" >
+<div class="d-flex flex-column root">
   
     <v-toolbar
       light
@@ -11,6 +11,7 @@
     </v-toolbar>
 
     <!--信息块-->
+    <div style="height:100%;">
          <v-list width="100%">
           <v-list-item >
               <v-list-item-avatar width="50px" height="50px">
@@ -67,12 +68,10 @@
             </v-row>
           </v-list-item-content>
             </v-list-item>
-
-     
          </v-list>
          <v-divider class="divider"></v-divider>
-
          <div class="text">仅显示最近一个月内容</div>
+      </div>
             
 
 
@@ -81,6 +80,9 @@
 <script>
 </script>
 <style scoped>
+.root{
+  height:100%;
+}
 .divider{
   margin-left: 40%;
   margin-right: 40%;

@@ -1,5 +1,5 @@
 <template>
- <div class="d-flex flex-column">
+ <div class="d-flex flex-column root">
      <v-toolbar
       light
       flat
@@ -8,7 +8,11 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-divider></v-divider>
-    <div class="d-flex flex-row root">
+
+    <!--切换选项卡-->
+    <div class="d-flex flex-row content2">
+
+      <!--切换选项卡-->
       <v-card class="tab">
       <v-tabs vertical>
       <v-tab
@@ -27,25 +31,29 @@
       </v-tab>
       </v-tabs>
       </v-card>
+
+      <!--内容-->
       <v-card class="right flex-grow-1">
         <div class="content">
+
+           <!--密码更改模块-->
           <div style="display:block;" id="security">
           <p class="font-weight-medium title">更改密码</p>
           <v-divider></v-divider>
-          <div style="width:400px;margin-top:15px;">
+          <div style="margin-top:15px;">
           <v-text-field :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
           :type="show1 ? 'text' : 'password'"
           :rules="rules.required"
           @click:append="show1 = !show1"
-          label="请输入旧密码" outlined rounded dense flat ></v-text-field>
+          label="请输入旧密码" outlined rounded dense flat></v-text-field>
           </div>
-          <div style="width:400px;">
+          <div>
           <v-text-field :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
           :type="show2 ? 'text' : 'password'"
           @click:append="show2 = !show2"
           label="请输入新密码" outlined rounded dense flat></v-text-field>
           </div>
-          <div style="width:400px;">
+          <div>
           <v-text-field :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" 
           :type="show3 ? 'text' : 'password'"
           @click:append="show3 = !show3"
@@ -55,6 +63,7 @@
           <span style="font-size:5px;margin-left:10px;"><a>忘记密码？</a></span>
           </div>
 
+          <!--账号管理模块-->
           <div style="display:none;" id="account">
              <p class="font-weight-medium title">账号管理</p>
              <v-divider></v-divider>
@@ -116,7 +125,6 @@ export default{
   margin-top: 10px;
 }
 .tab{
-  margin-left: 100px;
   height: 100%;
 }
 .content{
@@ -128,11 +136,17 @@ export default{
     font-size: 20px;
 }
 .right{
+  height: 100%;
   margin-left: 10px;
+}
+.content2{
   margin-right: 100px;
+  margin-left: 100px;
+  margin-top:10px;
+  height:100%;
+  margin-bottom:10px;
 }
 .root{
-  margin-top:20px;
   height:100%;
 }
 </style>

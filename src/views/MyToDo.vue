@@ -188,18 +188,18 @@ export default{
 </script>
 <style scoped>
 .root{
-  margin-left: 20px;
-  margin-right: 20px;
   height:100%;
 }
 .content{
   margin-top: 10px;
   margin-bottom:10px;
+  margin-right: 20px;
 }
 .drawer{
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom:10px;
+  margin-left: 20px;
 }
 .titleBar{
   margin-bottom: 10px;

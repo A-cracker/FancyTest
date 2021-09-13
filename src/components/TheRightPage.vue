@@ -1,5 +1,5 @@
 <template>
-    <router-view></router-view>
+    <router-view class="overflow-x-auto overflow-y-hidden"></router-view>
 </template>
 <script>
 export default {

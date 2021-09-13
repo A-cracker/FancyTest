@@ -10,7 +10,7 @@
     <div class="content flex-grow-1 d-flex">
     <v-card class="flex-grow-1 d-flex flex-row">
       <div class="flex-grow-1">
-      <the-ckeditor :editconfig="config" ref="editorRef"></the-ckeditor>
+      <the-ckeditor ref="editorRef"></the-ckeditor>
       </div>
       <div class="detail">
         <span class="h">基本信息</span>
@@ -38,14 +38,14 @@ export default{
     data:()=>({
       title:'',
       items:[],
-      config:{
-      toolbar: ['heading','|','bold','italic','Link','bulletedList','numberedList','blockQuote','|','undo','redo',],
-      placeholder:'请输入内容',
-      language: 'zh-cn',
-      ckfinder: {
-        uploadUrl: '/'
-      }
-    }
+    //   config:{
+    //   toolbar: ['heading','|','bold','italic','Link','bulletedList','numberedList','blockQuote','|','undo','redo',],
+    //   placeholder:'请输入内容',
+    //   language: 'zh-cn',
+    //   ckfinder: {
+    //     uploadUrl: '/'
+    //   }
+    // }
       
     }),
     components:{

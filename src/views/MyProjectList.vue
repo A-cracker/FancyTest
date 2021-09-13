@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="root">
     <v-toolbar flat>
         <v-toolbar-title>
             我的项目
@@ -134,6 +134,9 @@ export default{
 }
 </script>
 <style scoped>
+.root{
+  height:100%;
+}
 .pic{
     width:100%;
 }
