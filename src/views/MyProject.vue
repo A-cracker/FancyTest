@@ -3,6 +3,7 @@
     <v-toolbar
       light
       flat
+      class="toolbar"
     >
       <v-toolbar-title><v-icon>mdi-file-tree</v-icon>软件项目管理</v-toolbar-title>
     
@@ -260,5 +261,13 @@ import {inviteMem} from '@/request/api'
 .list{
   overflow: auto;
   height:150px;
+}
+.toolbar{
+  overflow-x:auto;overflow-y:hidden
+}
+.toolbar::-webkit-scrollbar
+{
+    height:4px;
+    background-color:white;
 }
 </style>

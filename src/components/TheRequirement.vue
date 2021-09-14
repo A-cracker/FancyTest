@@ -185,22 +185,6 @@ style="font-size:14px;"></v-treeview>
     >
     <v-btn icon @click="hidden2=!hidden2"><v-icon small>mdi-menu</v-icon></v-btn>
     <v-spacer></v-spacer>
-    <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-         <v-btn icon
-          v-bind="attrs"
-          v-on="on"><v-icon small>mdi-chevron-down</v-icon></v-btn>
-      </template>
-      <v-list>
-        <v-list-item dense link
-          v-for="(item, index) in ['处理人','创建人','优先级','状态']"
-          :key="index"
-          @click="fliter(item)"
-        >
-          <v-list-item-subtitle>{{ item }}</v-list-item-subtitle>
-        </v-list-item>
-      </v-list>
-    </v-menu>
     </v-toolbar>
   </v-card>
 
@@ -407,5 +391,9 @@ export default{
   margin-top: 7px;
   height:100%;
 }
-
+.list::-webkit-scrollbar
+{
+  width: 0px;
+  background-color:white;
+}
 </style>

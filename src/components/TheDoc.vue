@@ -171,6 +171,11 @@ routerto(number,type){
   margin-top: 7px;
   height:100%;
 }
+.list::-webkit-scrollbar
+{
+  width: 0px;
+  background-color:white;
+}
 .doc{
     width:100px;
 }

@@ -158,9 +158,6 @@ color="#ECEFF1"
       删除迭代
     </v-btn>
     <v-spacer></v-spacer>
-    <v-btn icon>
-        <v-icon>mdi-chevron-down</v-icon>
-      </v-btn>
     <v-btn icon @click="hidden=!hidden,selectable=!selectable">
         <v-icon>mdi-delete</v-icon>
     </v-btn>
@@ -551,6 +548,11 @@ export default{
 .list{
   margin-top: 7px;
   height:100%;
+}
+.list::-webkit-scrollbar
+{
+  width: 0px;
+  background-color:white;
 }
 
 </style>
