@@ -191,12 +191,12 @@ export default{
   height:100%;
 }
 .content{
+  margin-left: 20px;
   margin-top: 10px;
   margin-bottom:10px;
   margin-right: 20px;
 }
 .drawer{
-  margin-right: 10px;
   margin-top: 10px;
   margin-bottom:10px;
   margin-left: 20px;

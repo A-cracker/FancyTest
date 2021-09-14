@@ -31,7 +31,8 @@
   <v-card class="nav">
         <v-tabs height="45">
         <v-tab v-for="item in tabs"
-        :key="item">
+        :key="item"
+        @click="fliter(item.title)">
         {{item.title}}
         </v-tab>
         </v-tabs>
@@ -143,7 +144,7 @@ watch: {
 methods: {
 routerto(number,type){
      this.$router.push({
-       name:'TheDetail',
+       name:'MyDoc',
        params:{id:number, type:type}
      })
    },

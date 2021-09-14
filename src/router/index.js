@@ -10,14 +10,15 @@ import MyMessage from '@/views/MyMessage'
 import MyProjectList from '@/views/MyProjectList'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
+import MyDoc from '@/views/MyDoc'
 import MySetting from '@/views/MySetting'
-import ThePlan from '@/components/ThePlan';
-import TheRequirement from '@/components/TheRequirement';
-import TheUseCase from '@/components/TheUseCase';
-import TheExecute from '@/components/TheExecute';
-import TheBug from '@/components/TheBug';
-import TheDoc from '@/components/TheDoc';
-import TheChart from '@/components/TheChart';
+import ThePlan from '@/components/ThePlan'
+import TheRequirement from '@/components/TheRequirement'
+import TheUseCase from '@/components/TheUseCase'
+import TheExecute from '@/components/TheExecute'
+import TheBug from '@/components/TheBug'
+import TheDoc from '@/components/TheDoc'
+import TheChart from '@/components/TheChart'
 Vue.use(VueRouter)
 
 const routes = [
@@ -46,6 +47,12 @@ const routes = [
     path: '/thedetail/:id/:type',
     name: 'TheDetail',
     component: TheDetail,
+    props:true
+  },
+  {
+    path: '/mydoc/:id/:type',
+    name: 'MyDoc',
+    component: MyDoc,
     props:true
   },
   {

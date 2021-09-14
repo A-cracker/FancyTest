@@ -38,15 +38,6 @@ export default{
     data:()=>({
       title:'',
       items:[],
-    //   config:{
-    //   toolbar: ['heading','|','bold','italic','Link','bulletedList','numberedList','blockQuote','|','undo','redo',],
-    //   placeholder:'请输入内容',
-    //   language: 'zh-cn',
-    //   ckfinder: {
-    //     uploadUrl: '/'
-    //   }
-    // }
-      
     }),
     components:{
       TheCkeditor

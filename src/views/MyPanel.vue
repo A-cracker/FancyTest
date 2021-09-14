@@ -29,15 +29,16 @@
            <v-select
                   persistent-hint
                   hint="选择添加的卡片"
-                  :items="['我的待办','我的消息','我的设置','我的提醒']"
+                  :items="['我的待办','我的消息','我的项目','我的提醒','我的需求']"
                   label="卡片类型"
                   required
+                  v-model="selectCard"
             ></v-select>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="show=!show">取消</v-btn>
-          <v-btn color="primary" text @click="show=!show">确认添加</v-btn>
+          <v-btn color="primary" text @click="show=!show,addCard(selectCard)">确认添加</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -59,7 +60,7 @@
                      v-bind="attrs"
                      v-on="on"
                      @click="removeCard(item.id)">
-                     <v-icon>mdi-dots-vertical</v-icon>
+                     <v-icon>mdi-delete-sweep-outline</v-icon>
                      </v-btn>
                      </template>
                      <span>删除卡片</span>
@@ -80,12 +81,54 @@
 export default{
    data: () => ({
       show:false,
+      selectCard:'',
       cardList:[
          {id:'1',title:'我的需求'},
          {id:'2',title:'我的消息'},
-         {id:'3',title:'我的待办'},
+         {id:'3',title:'我的项目'},
          ]
    }),
+   methods:{
+      removeCard(id){
+         switch(id){
+            case 1:
+               this.cardList = this.cardList.concat({id:'1',title:'我的需求'})
+               break;
+            default:
+               break;
+         }
+      },
+      addCard(title){
+         let card
+         switch(title){
+            case '我的需求':
+               card = {id:'1',title:'我的需求'}
+               break;
+            case '我的消息':
+               card = {id:'2',title:'我的消息'}
+               break;
+            case '我的项目':
+               card = {id:'3',title:'我的项目'}
+               break;
+            case '我的待办':
+               card = {id:'4',title:'我的待办'}
+               break;
+            case '我的提醒':
+               card = {id:'5',title:'我的提醒'}
+               break;
+            default:
+               break;
+         }
+            //写根据card返回结构体的接口
+            // getCard().then(res => {(
+            // this.cardList=this.cardList.concat(card)
+            // swtich(res.id){
+            //   对应的取值
+            // }
+            // ).catch(...)
+            this.cardList=this.cardList.concat(card)
+      }
+   }
 }
 </script>
 <style scoped>
