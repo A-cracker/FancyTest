@@ -113,18 +113,18 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, _from, next) => { if (!to.meta.noAuth) {  // 判断该路由是否需要登录权限
-//   if (window.sessionStorage.Token) { 
-// next();
-//   } else {
-//       next({
-//           path: '/',
-//           query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
-// })
-//   }
-// } else {
-//   next();
-// }
-// })
+router.beforeEach((to, _from, next) => { if (!to.meta.noAuth) {  // 判断该路由是否需要登录权限
+  if (window.sessionStorage.Token) { 
+next();
+  } else {
+      next({
+          path: '/',
+          query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+})
+  }
+} else {
+  next();
+}
+})
 
 export default router

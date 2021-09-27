@@ -6,9 +6,9 @@ export const saveInfo = data => Network.put('/test2', data);
 //初始化细节页面
 export const initDetail = (id, type) => Network.get('/test3', { id, type })
 
-export const getToken = (mail, password) => Network.post('/auth/login', {
-     mail,
+export const getToken = (studentNumber,password) => Network.postLogin('/auth/login', 
+     studentNumber,
      password
-})
+)
 //添加邀请成员
 export const inviteMem =  data => Network.post('/api/edit/inviteMembers',data)

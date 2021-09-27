@@ -23,13 +23,13 @@
           <v-text-field
             filled
             solo
-            v-model="username"
+            v-model="studentNumber"
             counter="20"
             hint="名称限定20个字符内"
             prepend-icon="mdi-account"
             label="您的用户名"
             clearable
-            name="username"
+            name="studentNumber"
           ></v-text-field>
             
         <v-text-field
@@ -86,7 +86,7 @@
     data () {
       return {
         show: false,
-        username: '',
+        studentNumber: '',
         password: '',
         rules: {
           required: value => !!value || '必填',
@@ -97,26 +97,22 @@
     },
     methods : {
       login() {
-          getToken(this.username,this.password).then(res=>{
-            if(res.id)
-            {
-            var token=res.jwt
+          getToken(this.studentNumber,this.password).then(res=>{
+            if(res)
+            {  
+            var token=res.successInfo.jwt
              window.sessionStorage.setItem("Token",token)//保存到本地
-              this.$notify({
-                  type: "success",
-                  message: "欢迎你," + this.user.name + "!",
-                  duration: 3000 });
+              alert("欢迎你,用户" + res.successInfo.id+ "!");
+              console.log(window.sessionStorage.Token); 
+              window.location.href = '/mypanel';
             }
-           else 
-          { this.$message({
-            type: "error",
-            message: "用户名或密码错误",
-            showClose: true })
-          // window.location.href = '/mypanel'
-          }})},
+          }
+          )
+          .catch(err=>{alert(err);})
+          },
       toRegister() {
-          // window.location.href = '/register'
-          window.location.href = '/mypanel'//后端未完成前的入口
+          window.location.href = '/register'
+          // window.location.href = '/mypanel'//后端未完成前的入口
           }
       }
   }

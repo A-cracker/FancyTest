@@ -9,12 +9,12 @@
 <div>
   <v-card class="mx-auto col-md-10 infomation" height="635px" min-width="300px">
     <div class="d-flex justify-center avatar">
-  <v-avatar size="100"><img src="@/assets/img.jpg"></v-avatar>
+  <v-avatar size="100"> <img :src="info.avatar"></v-avatar>
     </div>
     <div class="d-flex justify-center btn">
-    <v-btn light depressed small :readonly="uneditable">更换头像</v-btn>
+    <v-btn @click="uploadAvatar" light depressed small :readonly="uneditable">更换头像</v-btn>
     </div>
-
+     <input id="avatar" class="hiddenInput" type="file" accept="image/*" @change="handleFile">
     <span id="username" class="d-flex justify-center">{{info.username}}</span>
     <span id="id" class="d-flex justify-center">{{info.id}}</span>
     <div class="d-flex justify-space-around detail">
@@ -63,6 +63,7 @@ import {getInfo,saveInfo} from '@/request/api'
       location:"",
       role:"",
       sexaulity:"",
+      avatar:""
     },
 
     }),
@@ -76,7 +77,21 @@ import {getInfo,saveInfo} from '@/request/api'
         this.changeInfo()
         alert("保存个人信息成功")
         saveInfo(this.info).then(res=>{console.log(res)})
-      }
+      },
+      uploadAvatar: function () {
+          this.$el.querySelector('#avatar').click()
+        },
+        // 将头像显示
+        handleFile: function (e) {
+          let $target = e.target || e.srcElement
+          let file = $target.files[0]
+          var reader = new FileReader()
+          reader.onload = (data) => {
+            let res = data.target || data.srcElement
+            this.info.avatar = res.result
+          }
+          reader.readAsDataURL(file)
+        },
     },
 
   mounted(){
@@ -115,4 +130,7 @@ import {getInfo,saveInfo} from '@/request/api'
 .left,.right{
   width:250px
 }
+.hiddenInput{
+      display: none;
+    }
 </style>
