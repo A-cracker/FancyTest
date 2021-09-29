@@ -10,5 +10,16 @@ export const getToken = (studentNumber,password) => Network.postLogin('/auth/log
      studentNumber,
      password
 )
+
+//注册提交信息
+export const registerInfo = (userName,studentNumber,password) => Network.post('/edit/registerUser',{userName,studentNumber,password})
+
+
 //添加邀请成员
-export const inviteMem =  data => Network.post('/api/edit/inviteMembers',data)
+export const inviteMem =  (projectId,memberArray) => Network.post('/edit/inviteMembers',{projectId,memberArray})
+
+//初始化邀请成员
+export const initMem = () => Network.get('/edit/initMemebers',{});
+
+//删除邀请成员
+export const deleteMem = (projectId,studentNumber) => Network.delete('/edit/deleteMembers',{projectId,studentNumber})

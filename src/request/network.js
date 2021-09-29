@@ -49,9 +49,7 @@ export default {
   },
   post: function (path = '', data) {
     return new Promise(function (resolve, reject) {
-      axios.post(path, {
-        data:data
-      })
+      axios.post(path, data)
         .then(function (response) { 
           resolve(response.data);
         })
@@ -70,6 +68,18 @@ export default {
           reject(error);
         });
     });
+  },
+  delete:function(path='',data){
+    return new Promise(function (resolve, reject) {
+      axios.delete(path, data)
+        .then(function (response) {
+          resolve(response.data);
+        })
+        .catch(function (error) {
+          reject(error);
+        });
+    });
+
   },
   postLogin: function (path = '', studentNumber,password) {
     return new Promise(function (resolve, reject) {
