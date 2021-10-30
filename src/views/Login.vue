@@ -101,8 +101,10 @@
             if(res)
             {  
             var token=res.successInfo.jwt
+            var id=res.successInfo.id
              window.sessionStorage.setItem("Token",token)//保存到本地
-              alert("欢迎你,用户" + res.successInfo.id+ "!");
+             window.sessionStorage.setItem("ID",id)//保存到本地
+              alert("欢迎你,用户" +window.sessionStorage.ID+ "!");
               console.log(window.sessionStorage.Token); 
               window.location.href = '/mypanel';
             }

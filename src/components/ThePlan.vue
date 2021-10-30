@@ -26,6 +26,7 @@ color="#ECEFF1"
 
         <v-text-field
         style="margin-bottom:10px;"
+        v-model="newName"
         label="迭代名"
         :rules="rules"
         hide-details="auto"
@@ -44,6 +45,7 @@ color="#ECEFF1"
                   :items="['未执行','实现中','已实现']"
                   label="优先级*"
                   required
+                  v-model="newSeverity"
                 ></v-select>
               </v-col>
               <v-col
@@ -56,6 +58,7 @@ color="#ECEFF1"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
                   label="严重程度*"
                   required
+                  v-model="newPriority"
                 ></v-select>
               </v-col>   
     </v-row> 
@@ -145,7 +148,7 @@ color="#ECEFF1"
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="createIteration"
             >
               创建
             </v-btn>
@@ -154,7 +157,7 @@ color="#ECEFF1"
       </v-dialog>
 
 
-    <v-btn dark class="mx-3" v-show="hidden">
+    <v-btn dark class="mx-3" v-show="hidden" @click="deleteIteration">
       删除迭代
     </v-btn>
     <v-spacer></v-spacer>
@@ -166,15 +169,14 @@ color="#ECEFF1"
 
 
 <div class="d-flex flex-row root" style="background-color:#ECEFF1;">
-
  <!--选项卡--> 
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px">
 <v-tabs vertical>
       <v-tab 
-      v-for="item in 3"
+      v-for="item in iterationNumber"
       :key="item">
-        <v-checkbox v-show="selectable"></v-checkbox>
-        迭代xxx
+      <v-checkbox v-model="wannaDelete" v-show="selectable"  :value="iterationInfo[item-1].name"></v-checkbox>
+        迭代{{iterationInfo[item-1].name}}
         <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
         </v-btn>
@@ -195,7 +197,7 @@ color="#ECEFF1"
         <v-icon left>
           mdi-chart-timeline-variant
         </v-icon>
-        迭代1
+        迭代{{currentIteration}}
         <span class="font-weight-light" style="font-size:10px;">2021-05-07 ~ 2021-05-17</span>
       </v-toolbar-title>
       
@@ -339,6 +341,38 @@ export default{
       date1: new Date().toISOString().substr(0, 10),
       date2: new Date().toISOString().substr(0, 10),
   
+      wannaDelete: [],
+      newName:"",
+      newPriority:"",
+      newSeverity:"",
+      newBegin:"",
+      newEnd:"",
+      currentIteration:1,
+      iterationNumber:3,
+      iterationInfo:[
+        {
+        name:"一",
+        priority:"实现中",
+        severity:"MIDDLE",
+        begin:"",
+        end:""
+        },
+        {
+        name:"二",
+        priority:"实现中",
+        severity:"MIDDLE",
+        begin:"",
+        end:""
+        },
+        {
+        name:"三",
+        priority:"已实现",
+        severity:"MIDDLE",
+        begin:"",
+        end:""
+        }
+      ],
+
       menu1: false,
       menu2:false,
       addListItemDialog:false,
@@ -526,6 +560,43 @@ export default{
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+      createIteration(){
+        this.dialog=!this.dialog
+        this.iterationInfo.push(
+        {
+        name:this.newName,
+        priority:this.newPriority,
+        severity:this.newSeverity,
+        begin:"",
+        end:""
+        }
+        )
+        this.iterationNumber++
+      },
+      deleteIteration(){
+        var flag=false
+        this.hidden=!this.hidden
+        this.selectable=!this.selectable
+        console.log(this.wannaDelete)
+        for (var i=0;i<this.iterationInfo.length;i++)
+        { 
+          for(var j=0;j<this.wannaDelete.length;j++)
+          {
+            if(this.iterationInfo[i].name==this.wannaDelete[j]) {flag=true}
+           }
+          if(flag==true)
+          {
+            this.iterationInfo.splice(i,1)
+            this.iterationNumber--
+          }
+          flag=false
+        }
+        
+      }
+ },
+ mounted()
+ {
+   alert("将进入项目id为"+this.$route.params.id+"的项目。");
  }
 
 }

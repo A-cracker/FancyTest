@@ -24,6 +24,7 @@ axios.interceptors.response.use(
     if (error.response) { 
     switch (error.response.status) { case 401: // 返回 401 清除token信息并跳转到登录页面
     sessionStorage.removeItem("Token");
+    sessionStorage.removeItem("ID");
    router.replace({
             path: "/",
             query: { redirect: router.currentRoute.fullPath }
@@ -33,12 +34,13 @@ axios.interceptors.response.use(
  });
 
 export default {
-  get: function (path = '', data = {}) {
+  get: function (path = '',data={}) {
     return new Promise(function (resolve, reject) {
-      axios.get(path, {
-        data: data
-      })
-        .then(function (response) {
+      axios.get(path, data
+      // params:{
+      //   id:id
+      // }
+      ) .then(function (response) {
           // 按需求来，这里我需要的是response.data，所以返回response.data，一般直接返回response
           resolve(response.data);
         })
@@ -47,9 +49,11 @@ export default {
         });
     });
   },
-  post: function (path = '', data) {
+  post: function (path = '', data={}) {
     return new Promise(function (resolve, reject) {
-      axios.post(path, data)
+      axios.post(path, 
+        data
+        )
         .then(function (response) { 
           resolve(response.data);
         })
@@ -62,14 +66,14 @@ export default {
     return new Promise(function (resolve, reject) {
       axios.put(path, data)
         .then(function (response) {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(function (error) {
           reject(error);
         });
     });
   },
-  delete:function(path='',data){
+  delete:function(path='',data={}){
     return new Promise(function (resolve, reject) {
       axios.delete(path, data)
         .then(function (response) {
@@ -81,18 +85,4 @@ export default {
     });
 
   },
-  postLogin: function (path = '', studentNumber,password) {
-    return new Promise(function (resolve, reject) {
-      axios.post(path, {
-        studentNumber: studentNumber,
-        password: password
-      })
-        .then(function (response) { 
-          resolve(response.data);
-        })
-        .catch(function (error) {
-          reject(error);
-        });
-    });
-  }
 };

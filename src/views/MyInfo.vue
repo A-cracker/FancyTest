@@ -20,16 +20,17 @@
     <div class="d-flex justify-space-around detail">
       <div class="left">
         <v-text-field label="身份" v-model="info.role" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="邮箱" v-model="info.email" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="学校" v-model="info.organization" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="所属班级" v-model="info.classNum" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="性别" v-model="info.sexuality" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense></v-text-field>
+        <v-text-field label="我的院系" v-model="info.school" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="我的邮箱" v-model="info.mail" outlined dense ></v-text-field>
       </div>
       <div class="right">
-        <v-text-field label="性别" v-model="info.sexaulity" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="所属院系" v-model="info.school" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="年级" v-model="info.grade" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="我的年级" v-model="info.grade" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="我的大学" v-model="info.university" outlined dense :readonly="uneditable"></v-text-field>
         <v-text-field label="所在地" v-model="info.location" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="我的班级" v-model="info.class" outlined dense :readonly="uneditable"></v-text-field>
+        <v-text-field label="学号" v-model="info.studentNumber" outlined dense :readonly="uneditable"></v-text-field>
         
       </div>
     </div>
@@ -52,18 +53,17 @@ import {getInfo,saveInfo} from '@/request/api'
       uneditable:true,
 
     info:{
-      username:"",
-      id:"",
-      email:"",
-      phoneNumber:"",
-      classNum:"",
-      school:"",
-      organization:"",
-      grade:"",
-      location:"",
+      avatar:"",
       role:"",
-      sexaulity:"",
-      avatar:""
+      sexuality:"",
+      phoneNumber:"",
+      school:"",
+      mail:"",
+      grade:"",
+      university:"",
+      location:"",
+      class:"",
+      studentNumber:"",
     },
 
     }),
@@ -75,42 +75,41 @@ import {getInfo,saveInfo} from '@/request/api'
       },
       saveInfo(){
         this.changeInfo()
-        alert("保存个人信息成功")
-        saveInfo(this.info).then(res=>{console.log(res)})
+        saveInfo(this.info).then(res=>{if(res.status==200)alert("保存个人信息成功")}).catch(alert("保存个人信息失败"))
       },
       uploadAvatar: function () {
           this.$el.querySelector('#avatar').click()
         },
         // 将头像显示
         handleFile: function (e) {
-          let $target = e.target || e.srcElement
+          let $target = e.target 
           let file = $target.files[0]
           var reader = new FileReader()
           reader.onload = (data) => {
-            let res = data.target || data.srcElement
+            let res = data.target
             this.info.avatar = res.result
+            console.log(res.result)//文件编码
           }
           reader.readAsDataURL(file)
-        },
-    },
-
-  mounted(){
+        }},
+  mounted()
+  {
     getInfo().then(res => {
-     this.info.username=res.username
-     this.info.id=res.id
-     this.info.email=res.email
-     this.info.phoneNumber=res.phoneNumber
-     this.info.classNum=res.classNum
-     this.info.organization=res.organization
-     this.info.location=res.location
-     this.info.role=res.role
-     this.info.grade=res.grade
-     this.info.school=res.school
-     this.info.sexaulity=res.sexaulity
+    console.log(res.phoneNumber)
+    this.info.avatar=res.successInfo.avatar
+    this.info.role=res.successInfo.role
+    this.info.sexuality=res.successInfo.sexuality
+    this.info.phoneNumber=res.successInfo.phoneNumber
+    this.info.school=res.successInfo.school
+    this.info.mail=res.successInfo.mail
+    this.info.grade=res.successInfo.grade
+    this.info.university=res.successInfo.university
+    this.info.location=res.successInfo.location
+    this.info.class=res.successInfo.class
+    this.info.studentNumber=res.successInfo.studentNumber
     });
  }
-
-  }
+ }
 </script>
 <style scoped>
 .infomation{
