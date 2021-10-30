@@ -33,3 +33,12 @@ export const deleteProject = (projectId) => Network.delete('/project/deleteProje
 
 //增加项目列表中项目
 export const addProject = (project) => Network.post('/project/addProject',project)
+
+//初始化项目的迭代
+export const initProject = (projectId) => Network.post('/project/initProjectInfo',{projectId})
+
+//创建迭代
+export const addIteration = (projectId,iterationName) => Network.post('/Iteration/addIteration',{projectId,iterationName})
+
+//删除迭代
+export const deleteIteration = (iterationId,projectId) => Network.delete('/project/deleteProject',{data:{iterationId,projectId}})

@@ -155,11 +155,19 @@ export default{
       initMyProj().then(res=>{
           for(var x=0;x<res.unfinishedProj.length;x++)
           {
-            this.projectList.push({id:res.unfinishedProj[x].projectId,name:res.unfinishedProj[x].projectName,url:require("@/assets/img3.jpg")})
+            this.projectList[this.projectList.length]=new Object();
+            this.projectList[this.projectList.length-1].id=res.unfinishedProj[x].projectId;
+            this.projectList[this.projectList.length-1].name=res.unfinishedProj[x].projectName;
+            this.projectList[this.projectList.length-1].url=require("@/assets/img3.jpg")
           }
+          this.projectList.push("1");
+          this.projectList.pop();
           for(var y=0;y<res.finishedProj.length;y++)
           {
-            this.projectList2.push({id:res.finishedProj[y].projectId,name:res.finishedProj[y].projectName,url:require("@/assets/img3.jpg")})
+            this.projectList2[this.projectList2.length]=new Object();
+            this.projectList2[this.projectList2.length-1].id=res.unfinishedProj[y].projectId;
+            this.projectList2[this.projectList2.length-1].name=res.unfinishedProj[y].projectName;
+            this.projectList2[this.projectList2.length-1].url=require("@/assets/img3.jpg")
           }
       });
     },
@@ -179,7 +187,15 @@ export default{
         },
         createProject(){
           this.createDialog = false;
-          addProject(this.newProject).then(res=>res(this.projectList.push({id:res.projectId,name:this.newProject.Project.projectName,url:require("@/assets/img3.jpg")})))
+          addProject(this.newProject).then((res)=>{
+            this.projectList[this.projectList.length]=new Object();
+            this.projectList[this.projectList.length-1].id=res.projectId;
+            this.projectList[this.projectList.length-1].name=this.newProject.Project.projectName;
+            this.projectList[this.projectList.length-1].url=require("@/assets/img3.jpg")
+            this.projectList.push("1");//让界面立即根据数据变化
+            this.projectList.pop();
+            }
+            )
         },
         deleteConfirm(id){
           this.deleteDialog=!this.deleteDialog;
@@ -191,7 +207,16 @@ export default{
             if(res.isDeleted)
             {
             alert("删除成功");
-            location.reload();
+            for(var i=0;i<this.projectList.length;i++)
+            {
+              if(this.wannaDelete==this.projectList[i].id)
+              {
+                this.projectList.splice(i,1);
+                break;
+              }
+            }
+            this.projectList.push("1");//让界面立即根据数据变化
+          this.projectList.pop();
             }
             else
             alert("删除失败");

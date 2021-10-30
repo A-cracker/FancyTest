@@ -173,10 +173,10 @@ color="#ECEFF1"
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px">
 <v-tabs vertical>
       <v-tab 
-      v-for="item in iterationNumber"
+      v-for="item in iterationInfo"
       :key="item">
-      <v-checkbox v-model="wannaDelete" v-show="selectable"  :value="iterationInfo[item-1].name"></v-checkbox>
-        迭代{{iterationInfo[item-1].name}}
+      <v-checkbox v-model="wannaDelete" v-show="selectable"  :value="item.id"></v-checkbox>
+        迭代{{item.name}}
         <v-btn icon>
         <v-icon small>mdi-chevron-double-right</v-icon>
         </v-btn>
@@ -326,7 +326,7 @@ color="#ECEFF1"
 
 </template>
 <script>
-
+import {initProject,addIteration,deleteIteration} from '@/request/api'
 
 export default{
     name:"ThePlan",
@@ -343,34 +343,20 @@ export default{
   
       wannaDelete: [],
       newName:"",
-      newPriority:"",
-      newSeverity:"",
-      newBegin:"",
-      newEnd:"",
+      // newPriority:"",
+      // newSeverity:"",
+      // newBegin:"",
+      // newEnd:"",
       currentIteration:1,
-      iterationNumber:3,
       iterationInfo:[
-        {
-        name:"一",
-        priority:"实现中",
-        severity:"MIDDLE",
-        begin:"",
-        end:""
-        },
-        {
-        name:"二",
-        priority:"实现中",
-        severity:"MIDDLE",
-        begin:"",
-        end:""
-        },
-        {
-        name:"三",
-        priority:"已实现",
-        severity:"MIDDLE",
-        begin:"",
-        end:""
-        }
+        // {
+        // id:"",
+        // name:"一",
+        // priority:"实现中",
+        // severity:"MIDDLE",
+        // begin:"",
+        // end:""
+        // }
       ],
 
       menu1: false,
@@ -562,41 +548,51 @@ export default{
       },
       createIteration(){
         this.dialog=!this.dialog
-        this.iterationInfo.push(
-        {
-        name:this.newName,
-        priority:this.newPriority,
-        severity:this.newSeverity,
-        begin:"",
-        end:""
-        }
-        )
-        this.iterationNumber++
+        addIteration(this.$route.params.id,this.newName).then((res)=>{
+          this.iterationInfo[this.iterationInfo.length]=new Object();
+          this.iterationInfo[this.iterationInfo.length-1].id=res.iterationId;
+          this.iterationInfo[this.iterationInfo.length-1].name=this.newName;
+          this.iterationInfo.push("1");//让界面立即根据数据变化
+          this.iterationInfo.pop();
+        })
       },
       deleteIteration(){
-        var flag=false
         this.hidden=!this.hidden
         this.selectable=!this.selectable
         console.log(this.wannaDelete)
-        for (var i=0;i<this.iterationInfo.length;i++)
-        { 
-          for(var j=0;j<this.wannaDelete.length;j++)
-          {
-            if(this.iterationInfo[i].name==this.wannaDelete[j]) {flag=true}
-           }
-          if(flag==true)
-          {
-            this.iterationInfo.splice(i,1)
-            this.iterationNumber--
-          }
-          flag=false
+        for(var k=0;k<this.wannaDelete.length;k++)
+        {
+          deleteIteration(this.wannaDelete[k],Number(this.$route.params.id)).then(res=>{
+            if(res.isDeleted)
+            {
+            for (var i=0;i<this.iterationInfo.length;i++)
+            { 
+              if(this.iterationInfo[i].id==this.wannaDelete[k]) 
+              {
+                this.iterationInfo.splice(i,1)
+              }
+            }
+            this.iterationInfo.push("1");//让界面立即根据数据变化
+            this.iterationInfo.pop();
+            }
+          })
         }
-        
       }
  },
  mounted()
  {
    alert("将进入项目id为"+this.$route.params.id+"的项目。");
+   initProject(this.$route.params.id).then((res)=>{
+     for(var x=0;x<res.iterations.length;x++)
+     {
+        this.iterationInfo[this.iterationInfo.length]=new Object();
+        this.iterationInfo[this.iterationInfo.length-1].id=res.iterations[x];
+        this.iterationInfo[this.iterationInfo.length-1].name="None";
+     }
+     this.iterationInfo.push("1");//让界面立即根据数据变化
+     this.iterationInfo.pop();
+   }
+   )
  }
 
 }
