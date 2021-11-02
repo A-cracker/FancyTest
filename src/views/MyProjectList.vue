@@ -8,8 +8,8 @@
     </v-toolbar>
     <v-divider></v-divider>
     <v-tabs>
-    <v-tab @click="changeProjectList()">待办项目</v-tab>
-    <v-tab @click="changeProjectList()">完成项目</v-tab>
+    <v-tab @click="changetoProjectList()">待办项目</v-tab>
+    <v-tab @click="changetoProjectList2()">完成项目</v-tab>
   </v-tabs>
 
   <div class="d-flex justify-start flex-wrap flex-row">
@@ -165,8 +165,8 @@ export default{
           for(var y=0;y<res.finishedProj.length;y++)
           {
             this.projectList2[this.projectList2.length]=new Object();
-            this.projectList2[this.projectList2.length-1].id=res.unfinishedProj[y].projectId;
-            this.projectList2[this.projectList2.length-1].name=res.unfinishedProj[y].projectName;
+            this.projectList2[this.projectList2.length-1].id=res.finishedProj[y].projectId;
+            this.projectList2[this.projectList2.length-1].name=res.finishedProj[y].projectName;
             this.projectList2[this.projectList2.length-1].url=require("@/assets/img3.jpg")
           }
       });
@@ -181,9 +181,13 @@ export default{
                 params:{id:number}
             })
         },
-        changeProjectList(){
-          this.show1=!this.show1
-          this.show2=!this.show2
+        changetoProjectList(){
+          this.show1=true;
+          this.show2=false;
+        },
+        changetoProjectList2(){
+          this.show1=false;
+          this.show2=true;
         },
         createProject(){
           this.createDialog = false;

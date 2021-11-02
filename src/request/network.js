@@ -73,7 +73,7 @@ export default {
         });
     });
   },
-  delete:function(path='',data={}){
+   delete: function(path='',data={}){
     return new Promise(function (resolve, reject) {
       axios.delete(path, data)
         .then(function (response) {

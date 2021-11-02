@@ -38,7 +38,7 @@ export const addProject = (project) => Network.post('/project/addProject',projec
 export const initProject = (projectId) => Network.post('/project/initProjectInfo',{projectId})
 
 //创建迭代
-export const addIteration = (projectId,iterationName) => Network.post('/Iteration/addIteration',{projectId,iterationName})
+export const addIteration = (projectId,iterationName) =>Network.post('/Iteration/addIteration',{projectId,iterationName})
 
 //删除迭代
-export const deleteIteration = (iterationId,projectId) => Network.delete('/project/deleteProject',{data:{iterationId,projectId}})
+export const deleteIteration = (iterationId,projectId) => Network.delete('/Iteration/deleteIteration',{data:{iterationId,projectId}})
