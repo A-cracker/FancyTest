@@ -12,18 +12,17 @@
   <v-avatar size="100"> <img :src="info.avatar"></v-avatar>
     </div>
     <div class="d-flex justify-center btn">
-    <v-btn @click="uploadAvatar" light depressed small :readonly="uneditable">更换头像</v-btn>
+    <v-btn @click="uploadAvatar" light depressed small :disabled="uneditable">更换头像</v-btn>
     </div>
      <input id="avatar" class="hiddenInput" type="file" accept="image/*" @change="handleFile">
-    <span id="username" class="d-flex justify-center">{{info.username}}</span>
-    <span id="id" class="d-flex justify-center">{{info.id}}</span>
+    <span id="username" class="d-flex justify-center">{{info.userName}}</span>
     <div class="d-flex justify-space-around detail">
       <div class="left">
-        <v-text-field label="身份" v-model="info.role" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="性别" v-model="info.sexuality" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense></v-text-field>
+        <v-select label="身份" v-model="info.role" outlined dense :readonly="uneditable" :items="['学生','老师']"></v-select>
+        <v-select label="性别" v-model="info.sexuality" outlined dense :readonly="uneditable" :items="['男','女']"></v-select>
+        <v-text-field label="手机号" v-model="info.phoneNumber" outlined dense :readonly="uneditable"></v-text-field>
         <v-text-field label="我的院系" v-model="info.school" outlined dense :readonly="uneditable"></v-text-field>
-        <v-text-field label="我的邮箱" v-model="info.mail" outlined dense ></v-text-field>
+        <v-text-field label="我的邮箱" v-model="info.mail" outlined dense :readonly="uneditable"></v-text-field>
       </div>
       <div class="right">
         <v-text-field label="我的年级" v-model="info.grade" outlined dense :readonly="uneditable"></v-text-field>
@@ -54,8 +53,9 @@ import {getInfo,saveInfo} from '@/request/api'
 
     info:{
       avatar:"",
+      userName:"",
       role:"",
-      sexuality:"",
+      sexuality:"男",
       phoneNumber:"",
       school:"",
       mail:"",
@@ -95,9 +95,9 @@ import {getInfo,saveInfo} from '@/request/api'
   mounted()
   {
     getInfo().then(res => {
-    console.log(res.phoneNumber)
     this.info.avatar=res.successInfo.avatar
     this.info.role=res.successInfo.role
+    this.info.userName=res.successInfo.userName
     this.info.sexuality=res.successInfo.sexuality
     this.info.phoneNumber=res.successInfo.phoneNumber
     this.info.school=res.successInfo.school
