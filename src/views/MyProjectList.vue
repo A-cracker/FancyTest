@@ -1,3 +1,4 @@
+
 <template>
 <div class="root">
     <v-toolbar flat>
@@ -7,8 +8,8 @@
     </v-toolbar>
     <v-divider></v-divider>
     <v-tabs>
-    <v-tab @click="changeProjectList('todo')">待办项目</v-tab>
-    <v-tab @click="changeProjectList('finshed')">完成项目</v-tab>
+    <v-tab @click="changetoProjectList()">待办项目</v-tab>
+    <v-tab @click="changetoProjectList2()">完成项目</v-tab>
   </v-tabs>
 
   <div class="d-flex justify-start flex-wrap flex-row">
@@ -17,38 +18,31 @@
             min-width="180px"
             max-width="180px"
             v-for="project in projectList"
-            :key="project.projectId"
+            :key="project.id"
             
             >
-            <img src= "@/assets/img3.jpg" class="pic" @click="routerto(project.projectId)">
-            <span style="margin-left:5px;float:left;">{{project.projectName}}</span>
-            <span style="float:right;">
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                <v-btn 
-                icon tile x-small 
-                @click="deleteConfirm(project.projectId)"
-                v-bind="attrs"
-                v-on="on">
-                <v-icon>mdi-delete</v-icon
-                ></v-btn>
-                </template>
-              <span>删除项目</span>
-              </v-tooltip>
-            </span>
+            <img :src= project.url class="pic" @click="routerto(project.id)">
+            <span style="margin-left:5px;">{{project.name}}</span>
+
+            <v-btn icon @click="deleteConfirm(project.id)">
+            <v-icon>mdi-delete</v-icon>
+
+            </v-btn>
             </v-card>
           
-          <v-card v-show="show2"
-          class="pro"
-          min-width="180px"
-          max-width="180px"
-          v-for="project in projectList2"
-          :key="project.projectId"
-          @click="routerto(project.projectId)"
-          >
-          <img src= "@/assets/img3.jpg" class="pic">
-          <span style="margin-left:5px;">{{project.projectName}}</span>
-          </v-card>
+            <v-card v-show="show2"
+            class="pro"
+            min-width="180px"
+            max-width="180px"
+            v-for="project in projectList2"
+            :key="project.id"
+            @click="routerto(project.id)"
+            >
+            <img :src= project.url class="pic">
+            <span style="margin-left:5px;">{{project.name}}</span>
+            </v-card>
+
+
 
           <v-card
           v-show="show1"
@@ -62,35 +56,33 @@
           </v-card>
 
           <v-dialog v-model=deleteDialog max-width="500px">
-                    <v-card>
-          <v-card-title>
-            删除项目
-          </v-card-title>
-          <v-card-text>
-            是否确认删除该项目？
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-card-title class="text-h5 grey lighten-2">
+            确认删除此项目?
+            </v-card-title>
+            <v-row justify="space-around">
+            <v-col cols="auto">
             <v-btn
               color="primary"
               text
               @click="deleteDialog = false"
             >
               取消
-            </v-btn>
-            <v-btn
-              color="error"
+           </v-btn>
+           </v-col>
+          <v-col cols="auto">
+           <v-btn
+              color="primary"
               text
-              @click="deleteDialog = false,deleteProject()"
+              @click="deleteProject()"
             >
-              确认删除
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+              确认
+           </v-btn>
+           </v-col>
+           </v-row>
           </v-dialog>
 
           <v-dialog v-model=createDialog max-width="500px">
-          <v-card>
+              <v-card>
           <v-card-title>
             创建项目
           </v-card-title>
@@ -159,15 +151,28 @@ export default{
           }
         }
     }),
-    created(){
+    mounted(){
       initMyProj().then(res=>{
-          this.projectList=res.unfinishedProj
-          this.projectList2=res.finishedProj
+          for(var x=0;x<res.unfinishedProj.length;x++)
+          {
+            this.projectList[this.projectList.length]=new Object();
+            this.projectList[this.projectList.length-1].id=res.unfinishedProj[x].projectId;
+            this.projectList[this.projectList.length-1].name=res.unfinishedProj[x].projectName;
+            this.projectList[this.projectList.length-1].url=require("@/assets/img3.jpg")
+          }
+          this.projectList.push("1");
+          this.projectList.pop();
+          for(var y=0;y<res.finishedProj.length;y++)
+          {
+            this.projectList2[this.projectList2.length]=new Object();
+            this.projectList2[this.projectList2.length-1].id=res.finishedProj[y].projectId;
+            this.projectList2[this.projectList2.length-1].name=res.finishedProj[y].projectName;
+            this.projectList2[this.projectList2.length-1].url=require("@/assets/img3.jpg")
+          }
       });
     },
-    computed:{
-      projectList:function () {
-      return this.projectList}
+    watch:{
+
     },
     methods:{
         routerto(number){
@@ -176,36 +181,30 @@ export default{
                 params:{id:number}
             })
         },
-        changeProjectList(state){
-          switch(state){
-            case "todo":
-              this.show1=true
-              this.show2=false
-              break;
-            case "finshed":
-              this.show2=true
-              this.show1=false
-              break;
-            default:
-                break;
-          }
+        changetoProjectList(){
+          this.show1=true;
+          this.show2=false;
+        },
+        changetoProjectList2(){
+          this.show1=false;
+          this.show2=true;
         },
         createProject(){
           this.createDialog = false;
           addProject(this.newProject).then((res)=>{
-            this.projectList=this.projectList.concat(
-              {
-                detail:this.newProject.Project.detail,
-                memberArray:this.newProject.Project.memberArrayInJson,
-                projectId:res.projectId,
-                projectName:this.newProject.Project.projectName
-              }
-            )}
-          )
+            this.projectList[this.projectList.length]=new Object();
+            this.projectList[this.projectList.length-1].id=res.projectId;
+            this.projectList[this.projectList.length-1].name=this.newProject.Project.projectName;
+            this.projectList[this.projectList.length-1].url=require("@/assets/img3.jpg")
+            this.projectList.push("1");//让界面立即根据数据变化
+            this.projectList.pop();
+            }
+            )
         },
         deleteConfirm(id){
           this.deleteDialog=!this.deleteDialog;
           this.wannaDelete=id;
+          console.log(id);
         },
         deleteProject(){
           deleteProject(this.wannaDelete).then((res)=>{
@@ -214,12 +213,14 @@ export default{
             alert("删除成功");
             for(var i=0;i<this.projectList.length;i++)
             {
-              if(this.projectList[i].projectId===this.wannaDelete)
+              if(this.wannaDelete==this.projectList[i].id)
               {
                 this.projectList.splice(i,1);
                 break;
               }
             }
+            this.projectList.push("1");//让界面立即根据数据变化
+          this.projectList.pop();
             }
             else
             alert("删除失败");

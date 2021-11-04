@@ -326,6 +326,7 @@ color="#ECEFF1"
 </template>
 <script>
 import {initProject,addIteration,deleteIteration} from '@/request/api'
+import axios from 'axios';
 
 export default{
     name:"ThePlan",
@@ -556,25 +557,32 @@ export default{
       deleteIteration(){
         this.hidden=!this.hidden
         this.selectable=!this.selectable
-        console.log(this.wannaDelete)
-        for(var k=0;k<this.wannaDelete.length;k++)
+
+        let requestArray = new Array();
+        for(let k=0;k<this.wannaDelete.length;k++)
         {
-          deleteIteration(this.wannaDelete[k],Number(this.$route.params.id)).then(res=>{
-            if(res.isDeleted)
-            {
-            for (var i=0;i<this.iterationInfo.length;i++)
-            { 
-              if(this.iterationInfo[i].id==this.wannaDelete[k]) 
+          requestArray.push(deleteIteration(this.wannaDelete[k],this.$route.params.id));
+        }
+        axios.all(requestArray).then(
+        axios.spread((...resp) => {//可变 ...扩展运算符将数组变成一个参数序列
+        [...resp].forEach((isDelete) => {
+            if (isDelete) {
+              for (var i=0;i<this.iterationInfo.length;i++)
+              { 
+              if(this.iterationInfo[i].id==this.wannaDelete[0]) 
               {
-                this.iterationInfo.splice(i,1)
+                this.iterationInfo.splice(i,1);
+                this.iterationInfo.push("1");//让界面立即根据数据变化
+                this.iterationInfo.pop();
+                this.wannaDelete.shift();
+                break;
               }
             }
-            this.iterationInfo.push("1");//让界面立即根据数据变化
-            this.iterationInfo.pop();
             }
-          })
-        }
-      }
+        });
+    })
+  )
+  }
  },
  mounted()
  {

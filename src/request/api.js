@@ -15,6 +15,7 @@ export const getToken = (studentNumber,password) => Network.post('/auth/login',
 //注册提交信息
 export const registerInfo = (userName,studentNumber,password) => Network.post('/edit/registerUser',{userName,studentNumber,password})
 
+
 //添加邀请成员
 export const inviteMem =  (projectId,memberArray) => Network.post('/edit/inviteMembers',{projectId,memberArray})
 
@@ -37,7 +38,7 @@ export const addProject = (project) => Network.post('/project/addProject',projec
 export const initProject = (projectId) => Network.post('/project/initProjectInfo',{projectId})
 
 //创建迭代
-export const addIteration = (projectId,iterationName) => Network.post('/Iteration/addIteration',{projectId,iterationName})
+export const addIteration = (projectId,iterationName) =>Network.post('/Iteration/addIteration',{projectId,iterationName})
 
 //删除迭代
-export const deleteIteration = (iterationId,projectId) => Network.delete('/project/deleteProject',{data:{iterationId,projectId}})
+export const deleteIteration = (iterationId,projectId) => Network.delete('/Iteration/deleteIteration',{data:{iterationId,projectId}})
