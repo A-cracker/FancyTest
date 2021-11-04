@@ -41,9 +41,9 @@ color="#ECEFF1"
               >
                 <v-select
                   persistent-hint
-                  hint="选择迭代优先级"
-                  :items="['未执行','实现中','已实现']"
-                  label="优先级*"
+                  hint="选择迭代阶段"
+                  :items="['未执行','执行中','已实现']"
+                  label="迭代阶段*"
                   required
                   v-model="newSeverity"
                 ></v-select>
@@ -54,9 +54,9 @@ color="#ECEFF1"
               >
                 <v-select
                 persistent-hint
-                  hint="选择迭代严重程度"
+                  hint="选择迭代优先级"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
-                  label="严重程度*"
+                  label="优先级*"
                   required
                   v-model="newPriority"
                 ></v-select>
@@ -274,7 +274,6 @@ color="#ECEFF1"
 
   <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
-      :show-select="selectable"
       :headers="headers"
       :items="listItems"
       :page.sync="page"
@@ -532,17 +531,15 @@ export default{
         else if (priority == "实现中") return 'green'
         else return 'grey'
     },
-    //时间选择
+      //时间选择
       formatDate (date) {
         if (!date) return null
-
         const [year, month, day] = date.split('-')
         return `${month}/${day}/${year}`
       },
       //规范格式
       parseDate (date) {
         if (!date) return null
-
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
@@ -581,7 +578,7 @@ export default{
  },
  mounted()
  {
-   alert("将进入项目id为"+this.$route.params.id+"的项目。");
+   //this.$route.params.id为项目id
    initProject(this.$route.params.id).then((res)=>{
      for(var x=0;x<res.iterations.length;x++)
      {
