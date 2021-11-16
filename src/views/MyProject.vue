@@ -74,7 +74,7 @@
             multiple
             hint="请填写成员的ID"
             label="成员ID"
-            placeholder="007"
+            placeholder="即学号，enter键结束输入"
             v-model="project.addMemArray"
           ></v-combobox>
           </v-card-text>
@@ -122,21 +122,62 @@
           <v-subheader>项目成员：</v-subheader>
         <div style="position:relative;overflow:hidden;">
         <div class="list">
-          <v-list-item v-for="item in project.members" :key="item.id">
+          <!-- <v-list-item v-for="(item,index) in project.members" :key="item.id"> -->
+            <v-list-item v-for="(item,index) in project.members" :key="item"> 
               <v-list-item-avatar>
               <v-img
               alt="avatar"
-              :src ="item.avatar"
+              src ="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202101%2F29%2F20210129131644_c2b14.thumb.400_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635302765&t=dc009f11d75b79b7b3337bac622b58c8"
               ></v-img>
               </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{ item.name }}（管理员）</v-list-item-title>
-            <v-list-item-subtitle>ID:{{ item.id }}</v-list-item-subtitle>
+            <!-- <v-list-item-title>{{ item.name }}（管理员）</v-list-item-title>
+            <v-list-item-subtitle>ID:{{ item.id }}</v-list-item-subtitle> -->
+            <v-list-item-title>伏黑惠（管理员）</v-list-item-title>
+            <v-list-item-subtitle>ID:{{ item }}</v-list-item-subtitle>
           </v-list-item-content>
         <v-list-item-icon>
+      <v-dialog
+      v-model="dialog_delete_member"
+      v-show="dialog_delete_member"
+      width="500"
+      >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text
+          v-bind="attrs"
+          v-on="on"
+          color="error"
+          @click="dialog_delete_member=true,dialog2=false"
+        >
           <v-btn icon>
           <v-icon>mdi-account-minus-outline</v-icon>
           </v-btn>
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          删除成员
+        </v-card-title>
+        <v-card-text>你将永久删除此成员,确认删除成员吗？</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog2 = true, dialog_delete_member=false"
+          >
+            取消
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog_delete_member = false; deleteMember(index)"
+          >
+            确认
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
         </v-list-item-icon>
             </v-list-item>
         </div>
@@ -195,7 +236,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
     </v-toolbar>
 
         <router-view :id="id"></router-view>
@@ -207,6 +247,8 @@
 
 <script>
 import {inviteMem} from '@/request/api'
+import {initMem} from '@/request/api'
+import {deleteMem} from '@/request/api'
 
  export default {
     props:['id'],
@@ -214,15 +256,20 @@ import {inviteMem} from '@/request/api'
       project:{
         projectObject:"对项目XXXX进行测试",
         members:[
-
+          // {
+          //   // id:201830381000,
+          //   // avatar:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202101%2F29%2F20210129131644_c2b14.thumb.400_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635302765&t=dc009f11d75b79b7b3337bac622b58c8",
+          //   // name:"伏黑惠"
+          // }
         ],
         addMemArray:[
           
         ]
       },
-      dialog: false,
-      dialog2:false,
-      dialog3:false,
+      dialog: false,  //邀请成员
+      dialog2:false,  //项目细节
+      dialog3:false,  //删除项目
+      dialog_delete_member:false,   //删除成员
       currentItem: 'ThePlan',
       inviteResponse:'',//邀请响应,true or false
       items: [
@@ -240,15 +287,40 @@ import {inviteMem} from '@/request/api'
     methods:{
     addMem(array){
       //判断是否重复，以及学号是否符合要求
-      inviteMem(array).then(res=>{//res返回新成员数组
-        this.project.members=this.project.members.concat(res)
-        })
       //如果符合则添加到现有的成员数组中
-      //将addMemArray数组清空
+      inviteMem(this.id,array).then(res=>{//res返回新成员数组
+        console.log(res);
+        if(res.isInvited == true){
+        alert("邀请成功！");
+        this.project.members=this.project.members.concat(array);
+        }
+        else
+           alert("邀请失败");
+        })
+        //将addMemArray数组清空
+        this.project.addMemArray = [];
+
+    },
+    deleteMember(index){
+      deleteMem(this.id,this.project.members[index]).then(res=>{
+        console.log(this.project.members);
+        console.log(res);
+        if(res.isDeleted==true){
+            alert("删除成员成功");
+            console.log(index);
+            this.project.members.splice(index,1);
+        }
+        else{
+          alert("删除成员失败");
+        }
+      })
     }
   },
   created(){
-    
+    initMem(this.id).then(res=>{
+      this.project.members = res.memInfos;
+      // console.log(res);
+    }).catch()
   },
   mounted() {
   }

@@ -17,13 +17,13 @@ export const registerInfo = (userName,studentNumber,password) => Network.post('/
 
 
 //添加邀请成员
-export const inviteMem =  (projectId,memberArray) => Network.post('/edit/inviteMembers',{projectId,memberArray})
+export const inviteMem =  (projectId,memberArrayInJson) => Network.post('/project/inviteMembers',{projectId,memberArrayInJson})
 
 //初始化邀请成员
-export const initMem = () => Network.get('/edit/initMemebers',{});
+export const initMem = (projectId) => Network.post('/project/initMember',{projectId});
 
 //删除邀请成员
-export const deleteMem = (projectId,studentNumber) => Network.delete('/edit/deleteMembers',{projectId,studentNumber})
+export const deleteMem = (projectId,studentNumber) => Network.delete('/project/deleteMember',{data:{projectId,studentNumber}})
 
 //初始化项目列表
 export const initMyProj =  () => Network.post('/project/initMyProj',{})

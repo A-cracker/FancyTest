@@ -5,7 +5,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://backend.fancytest.cn:30000/api',
+        target: 'https://backend.fancytest.cn:8080/api',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
