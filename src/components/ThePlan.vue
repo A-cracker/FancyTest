@@ -26,7 +26,7 @@ color="#ECEFF1"
 
         <v-text-field
         style="margin-bottom:10px;"
-        v-model="newName"
+        v-model="newIteration.iterationName"
         label="迭代名"
         :rules="rules"
         hide-details="auto"
@@ -45,7 +45,7 @@ color="#ECEFF1"
                   :items="['未执行','执行中','已实现']"
                   label="迭代阶段*"
                   required
-                  v-model="newSeverity"
+                  v-model="newIteration.state"
                 ></v-select>
               </v-col>
               <v-col
@@ -58,7 +58,7 @@ color="#ECEFF1"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
                   label="优先级*"
                   required
-                  v-model="newPriority"
+                  v-model="newIteration.priority"
                 ></v-select>
               </v-col>   
     </v-row> 
@@ -81,18 +81,18 @@ color="#ECEFF1"
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               readonly
-              v-model="date1"
+              v-model="newIteration.preStart"
               label="创建时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date1 = parseDate(formatDate(date1))"
+              @blur="newIteration.preStart = parseDate(formatDate(newIteration.preStart))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date1"
+            v-model="newIteration.preStart"
             no-title
             @input="menu1 = false"
           ></v-date-picker>
@@ -115,18 +115,18 @@ color="#ECEFF1"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date2"
+              v-model="newIteration.preEnd"
               label="结束时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date2 = parseDate(formatDate(date2))"
+              @blur="newIteration.preEnd = parseDate(formatDate(newIteration.preEnd))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date2"
+            v-model="newIteration.preEnd"
             no-title
             @input="menu2 = false"
           ></v-date-picker>
@@ -172,14 +172,12 @@ color="#ECEFF1"
  <!--选项卡--> 
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px">
 <v-tabs vertical>
-      <v-tab 
+      <v-tab class="d-flex flex-row justify-start"
       v-for="item in iterationInfo"
-      :key="item">
-      <v-checkbox v-model="wannaDelete" v-show="selectable"  :value="item.id"></v-checkbox>
-        迭代{{item.name}}
-        <v-btn icon>
-        <v-icon small>mdi-chevron-double-right</v-icon>
-        </v-btn>
+      :key="item"
+      @click="loadDetail(item)">
+      <v-checkbox v-model="wannaDelete" v-show="selectable" :value="item.iterationId"></v-checkbox>
+        {{item.iterationName}}
       </v-tab>
 </v-tabs>
 </v-card>
@@ -197,8 +195,8 @@ color="#ECEFF1"
         <v-icon left>
           mdi-chart-timeline-variant
         </v-icon>
-        迭代{{currentIteration}}
-        <span class="font-weight-light" style="font-size:10px;">2021-05-07 ~ 2021-05-17</span>
+        {{currentIteration}}
+        <span class="font-weight-light" style="font-size:10px;">{{currentDate}}</span>
       </v-toolbar-title>
       
       <v-spacer></v-spacer>
@@ -325,7 +323,7 @@ color="#ECEFF1"
 
 </template>
 <script>
-import {initProject,addIteration,deleteIteration} from '@/request/api'
+import {initInteration,addIteration,deleteIteration} from '@/request/api'
 import axios from 'axios';
 
 export default{
@@ -334,29 +332,22 @@ export default{
     data: () => ({
       rules: [
         value => !!value || '迭代名称不能为空',
-        value => (value && value.length >= 2) || '至少输入一个字符',
+        value => (value && value.length >= 1) || '至少输入一个字符',
       ],
-
       selectable:false,
-      date1: new Date().toISOString().substr(0, 10),
-      date2: new Date().toISOString().substr(0, 10),
-  
       wannaDelete: [],
-      newName:"",
-      // newPriority:"",
-      // newSeverity:"",
-      // newBegin:"",
-      // newEnd:"",
-      currentIteration:1,
+      newIteration:{
+        iterationName:"",
+        state:"",
+        priority:"",
+        preStart:new Date().toISOString().substr(0, 10),
+        preEnd:new Date().toISOString().substr(0, 10),
+      },
+      //迭代标题栏信息
+      currentIteration:"",
+      currentDate:"",
+      //迭代数组
       iterationInfo:[
-        // {
-        // id:"",
-        // name:"一",
-        // priority:"实现中",
-        // severity:"MIDDLE",
-        // begin:"",
-        // end:""
-        // }
       ],
 
       menu1: false,
@@ -369,9 +360,8 @@ export default{
           { title: 'Photos', icon: 'mdi-chart-timeline-variant' },
           { title: 'About', icon: 'mdi-chart-timeline-variant' },
         ],
-        
-        page: 1,
-        pageCount: 0,
+        page: 1,//展示的页面数
+        pageCount: 0,//分页组件的长度
         itemsPerPage: 9,
           headers: [
           {
@@ -399,39 +389,6 @@ export default{
             begin: '2021-2-15',
             end:'2021-3-20',
             type:'use'//标注类型
-          },
-          {
-            id: 2,
-            title: '需求2',
-            status:'实现中',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'req'
-          },
-          {
-            id: 3,
-            title: '需求3',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'req'
-          },
-          {
-            id: 4,
-            title: '用例2',
-            status:'未执行',
-            priority:'MIDDLE',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'use'
           },
           {
             id: 5,
@@ -546,12 +503,30 @@ export default{
       },
       createIteration(){
         this.dialog=!this.dialog
-        addIteration(this.$route.params.id,this.newName).then((res)=>{
-          this.iterationInfo[this.iterationInfo.length]=new Object();
-          this.iterationInfo[this.iterationInfo.length-1].id=res.iterationId;
-          this.iterationInfo[this.iterationInfo.length-1].name=this.newName;
-          this.iterationInfo.push("1");//让界面立即根据数据变化
-          this.iterationInfo.pop();
+        let iteration = this.newIteration
+        switch(iteration.state){
+          case "未执行":iteration.state="0"
+            break;
+          case "执行中":iteration.state="1"
+            break;
+          case "已实现":iteration.state="3"
+            break;
+            default:
+            break;
+        } 
+        switch(iteration.priority){
+          case "LOW":iteration.priority="0"
+            break;
+          case "MIDDLE":iteration.priority="1"
+            break;
+          case "HIGH":iteration.priority="2"
+            break;
+            default:
+            break;
+        }
+        addIteration(this.$route.params.id,
+        iteration).then((res)=>{
+          this.iterationInfo=this.iterationInfo.concat(res)
         })
       },
       deleteIteration(){
@@ -582,22 +557,20 @@ export default{
         });
     })
   )
+  },
+  loadDetail(item){
+    this.currentIteration= item.iterationName
+    this.currentDate= item.preStart + " - " + item.preEnd
   }
  },
  mounted()
  {
    //this.$route.params.id为项目id
-   initProject(this.$route.params.id).then((res)=>{
-     for(var x=0;x<res.iterations.length;x++)
-     {
-        this.iterationInfo[this.iterationInfo.length]=new Object();
-        this.iterationInfo[this.iterationInfo.length-1].id=res.iterations[x];
-        this.iterationInfo[this.iterationInfo.length-1].name="None";
-     }
-     this.iterationInfo.push("1");//让界面立即根据数据变化
-     this.iterationInfo.pop();
-   }
-   )
+    initInteration(this.$route.params.id).then(res=>{
+      this.iterationInfo=res.iterations
+      this.currentIteration=this.iterationInfo[0].iterationName
+      this.currentDate=this.iterationInfo[0].preStart + " - " + this.iterationInfo[0].preEnd
+    })
  }
 
 }

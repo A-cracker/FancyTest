@@ -1,17 +1,47 @@
 <!--传值类型和id-->
 <template>
     <div class="root d-flex flex-column">
+    <!--标题栏-->
       <v-toolbar-title> 
         <v-btn icon @click="$router.go(-1)">
-        <v-icon>mdi-keyboard-backspace</v-icon>
+        <v-icon>mdi-arrow-left-top</v-icon>
         </v-btn>
-        {{title}}
+        <span style="margin-right:20px;">标题</span>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            icon
+            x-small
+          >
+            <v-icon>mdi-alarm</v-icon>
+          </v-btn>
+        </template>
+        <span>加入提醒</span>
+     </v-tooltip>
+     <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            icon
+            x-small
+          >
+            <v-icon>mdi-delete-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>删除</span>
+     </v-tooltip>
         </v-toolbar-title>
+      
     <div class="content flex-grow-1 d-flex">
     <v-card class="flex-grow-1 d-flex flex-row">
+
       <div class="flex-grow-1">
       <the-ckeditor ref="editorRef"></the-ckeditor>
       </div>
+
       <div class="detail">
         <span class="h">基本信息</span>
         <hr style="red;"/>
@@ -47,7 +77,7 @@ export default{
         res=>{
           //标题名
           this.title=res.title
-          this.items=res.items
+          this.items=res.itemsn
         }
       )
     },

@@ -193,15 +193,14 @@ export default{
         createProject(){
           this.createDialog = false;
           addProject(this.newProject).then((res)=>{
-            this.projectList=this.projectList.concat(
-              {
-                detail:this.newProject.Project.detail,
-                memberArray:this.newProject.Project.memberArrayInJson,
-                projectId:res.projectId,
-                projectName:this.newProject.Project.projectName
-              }
-            )}
+            this.projectList=(this.projectList.concat(res))
+            },
           )
+          this.newProject.Project = new Object({
+            projectName:"",
+            memberArrayInJson:[],
+            detail:""
+            })
         },
         deleteConfirm(id){
           this.deleteDialog=!this.deleteDialog;
