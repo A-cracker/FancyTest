@@ -10,7 +10,7 @@ color="#ECEFF1"
       flat
     >
     <v-btn dark
-    @click="dialog=!dialog">
+    @click="createReq">
       创建需求
     </v-btn>
 <!--弹窗部分-->
@@ -30,9 +30,9 @@ color="#ECEFF1"
         :rules="rules"
         hide-details="auto"
         required
+        v-model="newRequirement.title"
         ></v-text-field>  
 
-            <!--选择优先级和严重程度-->
         <v-row>
               <v-col
                 cols="12"
@@ -40,10 +40,11 @@ color="#ECEFF1"
               >
                 <v-select
                   persistent-hint
-                  hint="选择需求优先级"
+                  hint="选择需求状态"
                   :items="['未执行','实现中','已实现']"
-                  label="优先级*"
+                  label="状态*"
                   required
+                  v-model="newRequirement.state"
                 ></v-select>
               </v-col>
               <v-col
@@ -52,10 +53,11 @@ color="#ECEFF1"
               >
                 <v-select
                 persistent-hint
-                  hint="选择需求严重程度"
+                  hint="选择需求优先级"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
-                  label="严重程度*"
+                  label="优先级*"
                   required
+                  v-model="newRequirement.priority"
                 ></v-select>
               </v-col>   
     </v-row> 
@@ -78,18 +80,18 @@ color="#ECEFF1"
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               readonly
-              v-model="date1"
+              v-model="newRequirement.preStart"
               label="创建时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date1 = parseDate(formatDate(date1))"
+              @blur="newRequirement.preStart = parseDate(formatDate(newRequirement.preStart))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date1"
+            v-model="newRequirement.preStart"
             no-title
             @input="menu1 = false"
           ></v-date-picker>
@@ -112,18 +114,18 @@ color="#ECEFF1"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date2"
+              v-model="newRequirement.preEnd"
               label="结束时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date2 = parseDate(formatDate(date2))"
+              @blur="newRequirement.preEnd = parseDate(formatDate(newRequirement.preEnd))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date2"
+            v-model="newRequirement.preEnd"
             no-title
             @input="menu2 = false"
           ></v-date-picker>
@@ -242,8 +244,7 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
-
-
+import {addReq} from '@/request/api'
 export default{
     name:"TheRequirement",
     props:['id'],
@@ -254,8 +255,6 @@ export default{
       ],
 
       selectable:false,
-      date1: new Date().toISOString().substr(0, 10),
-      date2: new Date().toISOString().substr(0, 10),
   
       menu1: false,
       menu2:false,
@@ -298,6 +297,15 @@ export default{
           { text: '预计开始', value: 'begin' ,align: 'center'},
           { text: '预估结束', value: 'end' ,align: 'center'},
         ],
+        requirementInfo:[],
+        newRequirement:{
+          title:"",
+          state:"",
+          priority:"",
+          preStart:new Date().toISOString().substr(0, 10),
+          preEnd:new Date().toISOString().substr(0, 10),
+        },
+        //假数据
         listItems: [
           {
             id: 1,
@@ -368,6 +376,37 @@ export default{
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+      createReq(){
+          this.dialog=!this.dialog
+          let requirement = this.newRequirement
+          switch(requirement.state){
+            case "未执行":requirement.state="0"
+              break;
+            case "执行中":requirement.state="1"
+              break;
+            case "已实现":requirement.state="3"
+              break;
+              default:
+              break;
+          } 
+          switch(requirement.priority){
+            case "LOW":requirement.priority="0"
+              break;
+            case "MIDDLE":requirement.priority="1"
+              break;
+            case "HIGH":requirement.priority="2"
+              break;
+              default:
+              break;
+          }
+          //后期删除
+          requirement.creatorNumber="201930381000"
+          requirement.processorNumber="201930381000"
+          addReq(this.$route.params.id,
+          requirement).then((res)=>{
+            this.requirementInfo=this.requirementInfo.concat(res)
+          })
+        },
  }
 
 }

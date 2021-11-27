@@ -220,11 +220,12 @@ color="#ECEFF1"
           :items="['需求','用例','缺陷']"
           label="选择添加项类别"
           dense
+          v-model="bindKind"
         ></v-select>
        </v-col>
        <v-col class="d-flex" cols="12" sm="6">
         <v-select
-          :items="['需求1','需求2','需求3']"
+          :items="bindList"
           label="选择需要添加的需求"
           dense
         ></v-select>
@@ -323,8 +324,8 @@ color="#ECEFF1"
 
 </template>
 <script>
-import {initInteration,addIteration,deleteIteration} from '@/request/api'
-import axios from 'axios';
+import {initInteration,addIteration,deleteIterations} from '@/request/api'
+// import axios from 'axios';
 
 export default{
     name:"ThePlan",
@@ -349,7 +350,7 @@ export default{
       //迭代数组
       iterationInfo:[
       ],
-
+      bindKind:"",
       menu1: false,
       menu2:false,
       addListItemDialog:false,
@@ -445,17 +446,6 @@ export default{
             end:'2021-3-20',
             type:'bug'
           },
-           {
-            id: 10,
-           title: '需求10',
-            status:'未执行',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'req'
-          },
         ],
 
     }),
@@ -464,105 +454,111 @@ export default{
       computedDateFormatted () {
         return this.formatDate(this.date)
       },
+      bindList:function () {
+      return this.getList(this.bindKind)
+    }
     },
-
-    watch: {
-      date () {
-        this.dateFormatted = this.formatDate(this.date)
-      },
+  watch: {
+    date () {
+      this.dateFormatted = this.formatDate(this.date)
     },
-
- methods: {
-   routerto(number,type){
-     this.$router.push({
-       name:'TheDetail',
-       params:{id:number, type:type}
-     })
-   },
-    getColorP (priority) {
-        if (priority == "HIGH") return 'red'
-        else if (priority == "MIDDLE") return 'orange'
-        else return 'green'
+  },
+  methods: {
+    routerto(number,type){
+      this.$router.push({
+        name:'TheDetail',
+        params:{id:number, type:type}
+      })
     },
-    getColorS (priority) {
-        if (priority == "未执行") return 'primary'
-        else if (priority == "实现中") return 'green'
-        else return 'grey'
-    },
-      //时间选择
-      formatDate (date) {
-        if (!date) return null
-        const [year, month, day] = date.split('-')
-        return `${month}/${day}/${year}`
+      getColorP (priority) {
+          if (priority == "HIGH") return 'red'
+          else if (priority == "MIDDLE") return 'orange'
+          else return 'green'
       },
-      //规范格式
-      parseDate (date) {
-        if (!date) return null
-        const [month, day, year] = date.split('/')
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      getColorS (priority) {
+          if (priority == "未执行") return 'primary'
+          else if (priority == "实现中") return 'green'
+          else return 'grey'
       },
-      createIteration(){
-        this.dialog=!this.dialog
-        let iteration = this.newIteration
-        switch(iteration.state){
-          case "未执行":iteration.state="0"
-            break;
-          case "执行中":iteration.state="1"
-            break;
-          case "已实现":iteration.state="3"
-            break;
-            default:
-            break;
-        } 
-        switch(iteration.priority){
-          case "LOW":iteration.priority="0"
-            break;
-          case "MIDDLE":iteration.priority="1"
-            break;
-          case "HIGH":iteration.priority="2"
-            break;
-            default:
-            break;
-        }
-        addIteration(this.$route.params.id,
-        iteration).then((res)=>{
-          this.iterationInfo=this.iterationInfo.concat(res)
-        })
-      },
-      deleteIteration(){
-        this.hidden=!this.hidden
-        this.selectable=!this.selectable
-
-        let requestArray = new Array();
-        for(let k=0;k<this.wannaDelete.length;k++)
-        {
-          requestArray.push(deleteIteration(this.wannaDelete[k],this.$route.params.id));
-        }
-        axios.all(requestArray).then(
-        axios.spread((...resp) => {//可变 ...扩展运算符将数组变成一个参数序列
-        [...resp].forEach((isDelete) => {
-            if (isDelete) {
-              for (var i=0;i<this.iterationInfo.length;i++)
-              { 
-              if(this.iterationInfo[i].id==this.wannaDelete[0]) 
-              {
-                this.iterationInfo.splice(i,1);
-                this.iterationInfo.push("1");//让界面立即根据数据变化
-                this.iterationInfo.pop();
-                this.wannaDelete.shift();
-                break;
+        //时间选择
+        formatDate (date) {
+          if (!date) return null
+          const [year, month, day] = date.split('-')
+          return `${month}/${day}/${year}`
+        },
+        //规范格式
+        parseDate (date) {
+          if (!date) return null
+          const [month, day, year] = date.split('/')
+          return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+        },
+        createIteration(){
+          this.dialog=!this.dialog
+          let iteration = this.newIteration
+          switch(iteration.state){
+            case "未执行":iteration.state="0"
+              break;
+            case "执行中":iteration.state="1"
+              break;
+            case "已实现":iteration.state="3"
+              break;
+              default:
+              break;
+          } 
+          switch(iteration.priority){
+            case "LOW":iteration.priority="0"
+              break;
+            case "MIDDLE":iteration.priority="1"
+              break;
+            case "HIGH":iteration.priority="2"
+              break;
+              default:
+              break;
+          }
+          addIteration(this.$route.params.id,
+          iteration).then((res)=>{
+            this.iterationInfo=this.iterationInfo.concat(res)
+          })
+        },
+        deleteIteration(){
+          this.hidden=!this.hidden
+          this.selectable=!this.selectable
+          let request = this.wannaDelete
+          alert(request)
+          deleteIterations(request).then(res=>{
+            if(res.isDeleted){
+               for (var i=0;i<this.iterationInfo.length;i++){ 
+                if(this.iterationInfo[i].iterationId==this.wannaDelete[0]) 
+                {
+                  this.iterationInfo.splice(i,1)
+                  this.wannaDelete.shift()
+                  break;
+                }
               }
             }
+            else{
+              alert("删除失败")
             }
-        });
-    })
-  )
+          })
+    },
+    getList(bindKind){
+      switch(bindKind){
+        case '需求':
+          return ['1','2','3']
+        case '用例':
+          return ['a','b','c']
+        case '缺陷':
+          return ['q','w','w']
+        default:
+          break;
+
+      }
+    },
+    loadDetail(item){
+      this.currentIteration= item.iterationName
+      this.currentDate= item.preStart + " - " + item.preEnd
+    }
   },
-  loadDetail(item){
-    this.currentIteration= item.iterationName
-    this.currentDate= item.preStart + " - " + item.preEnd
-  }
- },
  mounted()
  {
    //this.$route.params.id为项目id
