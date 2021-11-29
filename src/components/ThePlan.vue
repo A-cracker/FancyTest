@@ -198,7 +198,52 @@ color="#ECEFF1"
         {{currentIteration}}
         <span class="font-weight-light" style="font-size:10px;">{{currentDate}}</span>
       </v-toolbar-title>
-      
+      <v-btn icon x-small style="margin-left:10px;"
+      @click="iterationDetailDialog=!iterationDetailDialog"
+      ><v-icon>mdi-dots-vertical-circle-outline</v-icon></v-btn>
+      <v-dialog
+        v-model="iterationDetailDialog"
+        max-width="500px"
+      >
+        <v-card>
+        <v-card-title>迭代详情</v-card-title>
+        <v-card-text>
+          <v-text-field  label="迭代名称" required></v-text-field>
+          <v-row>
+          <v-col><v-select :items="['未执行','执行中','已实现']" label="状态" required hint="填写迭代阶段"></v-select></v-col>
+          <v-col><v-select :items="['LOW','MIDDLE','HIGH']" label="优先级" required hint="填写迭代优先级"></v-select></v-col>
+          </v-row>
+          <v-menu
+          ref="menu3"
+          v-model="menu3"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+               <v-text-field
+               v-model="dateRangeText" 
+               label="迭代时间范围" 
+               prepend-icon="mdi-calendar" 
+               hint="MM/DD/YYYY"
+               readonly
+               v-on="on"
+               v-bind="attrs">
+               </v-text-field>
+          </template>
+          <v-date-picker v-model="dates" range no-title></v-date-picker>
+        </v-menu>
+          <v-textarea outlined label="迭代描述" value=""></v-textarea>
+        </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="iterationDetailDialog = false">取消</v-btn>
+            <v-btn color="primary" text @click="iterationDetailDialog = false">确认</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-spacer></v-spacer>
 
       
@@ -214,7 +259,7 @@ color="#ECEFF1"
         <v-card>
         <v-card-title>细化迭代</v-card-title>
         <v-card-text>
-        <v-row align="center">
+        <v-row>
         <v-col class="d-flex" cols="12" sm="6">
         <v-select
           :items="['需求','用例','缺陷']"
@@ -353,8 +398,12 @@ export default{
       bindKind:"",
       menu1: false,
       menu2:false,
+      menu3:false,
       addListItemDialog:false,
       dialog:false,
+      iterationDetailDialog:false,
+      //迭代详情的时间范围
+      dates:[],
       hidden:false,
       items: [
           { title: 'Dashboard', icon: 'mdi-chart-timeline-variant' },
@@ -456,7 +505,10 @@ export default{
       },
       bindList:function () {
       return this.getList(this.bindKind)
-    }
+      },
+      dateRangeText () {
+        return this.dates.join(' - ')
+      },
     },
   watch: {
     date () {
