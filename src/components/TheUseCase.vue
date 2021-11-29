@@ -30,6 +30,7 @@ color="#ECEFF1"
         :rules="rules"
         hide-details="auto"
         required
+        v-model="newUseCase.title"
         ></v-text-field>  
 
             <!--选择优先级和严重程度-->
@@ -40,10 +41,11 @@ color="#ECEFF1"
               >
                 <v-select
                   persistent-hint
-                  hint="选择用例优先级"
+                  hint="选择用例状态"
                   :items="['未执行','实现中','已实现']"
-                  label="优先级*"
+                  label="状态*"
                   required
+                  v-model="newUseCase.state"
                 ></v-select>
               </v-col>
               <v-col
@@ -52,10 +54,11 @@ color="#ECEFF1"
               >
                 <v-select
                 persistent-hint
-                  hint="选择用例严重程度"
+                  hint="选择用例优先级"
                   :items="['HIGH', 'MIDDLE', 'LOW']"
-                  label="严重程度*"
+                  label="优先级*"
                   required
+                  v-model="newUseCase.priority"
                 ></v-select>
               </v-col>   
     </v-row> 
@@ -78,18 +81,18 @@ color="#ECEFF1"
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               readonly
-              v-model="date1"
               label="创建时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date1 = parseDate(formatDate(date1))"
+              @blur="newUseCase.preStart = parseDate(formatDate(newUseCase.preStart))"
               v-on="on"
+              v-model="newUseCase.preStart"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date1"
+            v-model="newUseCase.preStart"
             no-title
             @input="menu1 = false"
           ></v-date-picker>
@@ -112,18 +115,18 @@ color="#ECEFF1"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date2"
+              v-model="newUseCase.preEnd"
               label="结束时间"
               hint="MM/DD/YYYY"
               persistent-hint
               prepend-icon="mdi-calendar"
               v-bind="attrs"
-              @blur="date2 = parseDate(formatDate(date2))"
+              @blur="newUseCase.preEnd = parseDate(formatDate(newUseCase.preEnd))"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date2"
+            v-model="newUseCase.preEnd"
             no-title
             @input="menu2 = false"
           ></v-date-picker>
@@ -145,7 +148,7 @@ color="#ECEFF1"
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="dialog = false;createUseCase()"
             >
               创建
             </v-btn>
@@ -209,12 +212,12 @@ style="font-size:14px;"></v-treeview>
       </v-chip>
     </template>
 
-    <template v-slot:[`item.status`]="{ item }">
+    <template v-slot:[`item.state`]="{ item }">
       <v-chip small outlined
-        :color="getColorS(item.status)"
+        :color="getColorS(item.state)"
         dark
       >
-        {{ item.status }}
+        {{ item.state }}
       </v-chip>
     </template>
 
@@ -242,7 +245,7 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
-
+import {addUseCase} from '@/request/api'
 
 export default{
     name:"TheUseCase",
@@ -254,9 +257,7 @@ export default{
       ],
 
       selectable:false,
-      date1: new Date().toISOString().substr(0, 10),
-      date2: new Date().toISOString().substr(0, 10),
-  
+
       menu1: false,
       menu2:false,
       addListItemDialog:false,
@@ -279,7 +280,14 @@ export default{
           { title: 'Photos', icon: 'mdi-chart-timeline-variant' },
           { title: 'About', icon: 'mdi-chart-timeline-variant' },
         ],
-        
+        newUseCase:{
+          title:"",
+          priority:"",
+          state:"",
+          preStart:new Date().toISOString().substr(0, 10),
+          preEnd:new Date().toISOString().substr(0, 10)
+        },
+        useCaseInfo:[],
         page: 1,
         pageCount: 0,
         itemsPerPage: 9,
@@ -291,7 +299,7 @@ export default{
             value: 'id',
           },
           { text: '标题', value: 'title', align: 'center'},
-          { text: '状态', value: 'status',align: 'center'},
+          { text: '状态', value: 'state',align: 'center'},
           { text: '优先级', value: 'priority',align: 'center'},
           { text: '处理人', value: 'processor',align: 'center'},
           { text: '创建人', value: 'creator',align: 'center' },
@@ -302,19 +310,8 @@ export default{
           {
             id: 1,
             title: '用例1',
-            status:'未执行',
+            state:'未执行',
             priority:'LOW',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'usecase'
-          },
-          {
-            id: 2,
-            title: '用例2',
-            status:'实现中',
-            priority:'HIGH',
             processor: '小梁',
             creator: '小王',
             begin: '2021-2-15',
@@ -368,6 +365,34 @@ export default{
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+      createUseCase(){
+          this.dialog=!this.dialog
+          let usecase = this.newUseCase
+          switch(usecase.state){
+            case "未执行":usecase.state="0"
+              break;
+            case "实现中":usecase.state="1"
+              break;
+            case "已实现":usecase.state="2"
+              break;
+              default:
+              break;
+          } 
+          switch(usecase.priority){
+            case "LOW":usecase.priority="0"
+              break;
+            case "MIDDLE":usecase.priority="1"
+              break;
+            case "HIGH":usecase.priority="2"
+              break;
+              default:
+              break;
+          }
+          addUseCase(this.$route.params.id,
+          usecase).then((res)=>{
+            this.useCaseInfo=this.useCaseInfo.concat(res.require)
+          })
+        },
  }
 
 }

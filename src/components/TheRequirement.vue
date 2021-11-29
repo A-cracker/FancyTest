@@ -10,7 +10,7 @@ color="#ECEFF1"
       flat
     >
     <v-btn dark
-    @click="createReq">
+    @click="dialog=!dialog">
       创建需求
     </v-btn>
 <!--弹窗部分-->
@@ -32,6 +32,21 @@ color="#ECEFF1"
         required
         v-model="newRequirement.title"
         ></v-text-field>  
+                <v-select
+                  persistent-hint
+                  hint="选择需求类型"
+                  :items="['功能','非功能']"
+                  label="类型"
+                  required
+                ></v-select>
+                
+                <v-select
+                persistent-hint
+                  hint="选择需求处理人"
+                  :items="['201930381000', '201830391000', '201830391000']"
+                  label="处理人"
+                  required
+                ></v-select>
 
         <v-row>
               <v-col
@@ -147,7 +162,7 @@ color="#ECEFF1"
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="createReq"
             >
               创建
             </v-btn>
@@ -160,7 +175,7 @@ color="#ECEFF1"
       删除需求
     </v-btn>
     <v-spacer></v-spacer>
-    <span class="font-weight-light" style="font-size:10px;">|共10个需求</span>
+    <span class="font-weight-light" style="font-size:10px;">|共{{count}}个需求</span>
     <v-btn icon @click="hidden=!hidden;selectable=!selectable">
         <v-icon>mdi-delete</v-icon>
     </v-btn>
@@ -172,7 +187,7 @@ color="#ECEFF1"
 
  <!--选项卡--> 
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px" v-show="hidden2" width="210">
-<v-treeview :items="tree" dense hoverable activatable class="font-weight-light" :selectable="selectable"
+<v-treeview :items="tree" dense hoverable activatable class="font-weight-light"
 style="font-size:14px;"></v-treeview>
 </v-card>
 
@@ -194,7 +209,7 @@ style="font-size:14px;"></v-treeview>
     <v-data-table
       :show-select="selectable"
       :headers="headers"
-      :items="listItems"
+      :items="requirementInfo"
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
@@ -211,12 +226,12 @@ style="font-size:14px;"></v-treeview>
       </v-chip>
     </template>
 
-    <template v-slot:[`item.status`]="{ item }">
+    <template v-slot:[`item.state`]="{ item }">
       <v-chip small outlined
-        :color="getColorS(item.status)"
+        :color="getColorS(item.state)"
         dark
       >
-        {{ item.status }}
+        {{ item.state }}
       </v-chip>
     </template>
 
@@ -244,7 +259,7 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
-import {addReq} from '@/request/api'
+import {addReq,initRequirement} from '@/request/api'
 export default{
     name:"TheRequirement",
     props:['id'],
@@ -290,14 +305,13 @@ export default{
             value: 'id',
           },
           { text: '标题', value: 'title', align: 'center'},
-          { text: '状态', value: 'status',align: 'center'},
+          { text: '状态', value: 'state',align: 'center'},
           { text: '优先级', value: 'priority',align: 'center'},
           { text: '处理人', value: 'processor',align: 'center'},
           { text: '创建人', value: 'creator',align: 'center' },
-          { text: '预计开始', value: 'begin' ,align: 'center'},
-          { text: '预估结束', value: 'end' ,align: 'center'},
+          { text: '预计开始', value: 'preStart' ,align: 'center'},
+          { text: '预估结束', value: 'preEnd' ,align: 'center'},
         ],
-        requirementInfo:[],
         newRequirement:{
           title:"",
           state:"",
@@ -305,38 +319,22 @@ export default{
           preStart:new Date().toISOString().substr(0, 10),
           preEnd:new Date().toISOString().substr(0, 10),
         },
-        //假数据
-        listItems: [
-          {
-            id: 1,
-            title: '需求1',
-            status:'未执行',
-            priority:'LOW',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'usecase'
-          },
-          {
-            id: 2,
-            title: '需求2',
-            status:'实现中',
-            priority:'HIGH',
-            processor: '小梁',
-            creator: '小王',
-            begin: '2021-2-15',
-            end:'2021-3-20',
-            type:'usecase'
-          },
-        ],
-
+        memberArray:[],
+        requirementInfo: [],
     }),
 
+  mounted(){
+    initRequirement(this.$route.params.id).then(res=>{
+      this.requirementInfo=res.requirements
+    })
+  },
   computed: {
       computedDateFormatted () {
         return this.formatDate(this.date)
       },
+      count: function () {
+      return this.requirementInfo.length
+    },
     },
 
     watch: {
@@ -382,9 +380,9 @@ export default{
           switch(requirement.state){
             case "未执行":requirement.state="0"
               break;
-            case "执行中":requirement.state="1"
+            case "实现中":requirement.state="1"
               break;
-            case "已实现":requirement.state="3"
+            case "已实现":requirement.state="2"
               break;
               default:
               break;
@@ -399,12 +397,9 @@ export default{
               default:
               break;
           }
-          //后期删除
-          requirement.creatorNumber="201930381000"
-          requirement.processorNumber="201930381000"
           addReq(this.$route.params.id,
           requirement).then((res)=>{
-            this.requirementInfo=this.requirementInfo.concat(res)
+            this.requirementInfo=this.requirementInfo.concat(res.require)
           })
         },
  }
