@@ -69,7 +69,7 @@ color="#ECEFF1"
                 <v-select
                 persistent-hint
                   hint="选择需求优先级"
-                  :items="['HIGH', 'MIDDLE', 'LOW']"
+                  :items="['High', 'Middle', 'Low']"
                   label="优先级*"
                   required
                   v-model="newRequirement.priority"
@@ -351,8 +351,8 @@ export default{
      })
    },
     getColorP (priority) {
-        if (priority == "HIGH") return 'red'
-        else if (priority == "MIDDLE") return 'orange'
+        if (priority == "High") return 'red'
+        else if (priority == "Middle") return 'orange'
         else return 'green'
     },
     getColorS (priority) {
@@ -388,11 +388,11 @@ export default{
               break;
           } 
           switch(requirement.priority){
-            case "LOW":requirement.priority="0"
+            case "Low":requirement.priority="0"
               break;
-            case "MIDDLE":requirement.priority="1"
+            case "Middle":requirement.priority="1"
               break;
-            case "HIGH":requirement.priority="2"
+            case "High":requirement.priority="2"
               break;
               default:
               break;

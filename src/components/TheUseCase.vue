@@ -173,7 +173,7 @@ color="#ECEFF1"
 
  <!--选项卡--> 
 <v-card class="tab overflow-y-auto overflow-x-auto" max-height="600px" min-width="100px" v-show="hidden2" width="210">
-<v-treeview :items="tree" dense hoverable activatable class="font-weight-light" :selectable="selectable"
+<v-treeview :items="tree" dense hoverable activatable class="font-weight-light"
 style="font-size:14px;"></v-treeview>
 </v-card>
 

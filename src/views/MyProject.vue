@@ -119,6 +119,12 @@
           <v-list subheader>
             <v-subheader> 项目内容：</v-subheader>
             <v-list-item>{{project.projectObject}}</v-list-item>
+            <v-subheader>项目状态：</v-subheader>
+            <v-list-item>
+              <v-chip-group mandatory active-class="primary--text" v-model="project.projectState">
+                <v-chip v-for="tag in ['已完成','未完成']" :key="tag" :value="tag">{{ tag }}</v-chip>
+              </v-chip-group>
+            </v-list-item>
           <v-subheader>项目成员：</v-subheader>
         <div style="position:relative;overflow:hidden;">
         <div class="list">
@@ -182,7 +188,7 @@
             </v-list-item>
         </div>
         </div>
-        </v-list>
+      </v-list>
         </v-card-text>
     <v-divider></v-divider>
       <v-card-actions>
@@ -254,6 +260,8 @@ import {deleteMem} from '@/request/api'
     props:['id'],
     data: () => ({
       project:{
+        projectName:"软件项目管理",
+        projectState:"",
         projectObject:"对项目XXXX进行测试",
         members:[
           // {

@@ -71,7 +71,9 @@ export default {
 
 <style>
 .ck-editor__editable {
-  min-height: 400px;
+  width:100%;
+  height:209.54px;
+  border:1px #D3D3D3 solid;
 }
 </style>
 
