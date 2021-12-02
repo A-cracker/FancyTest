@@ -401,22 +401,15 @@ export default{
           this.hidden=!this.hidden
           this.selectable=!this.selectable
           var request=[];
-          for(let i=0;i<this.wannaDelete.length;i++)
+          for(let i=this.wannaDelete.length-1;i>=0;i--)
           {
             request.push(this.wannaDelete[i].id);
+            this.wannaDelete.pop();
           }
-          this.wannaDelete.length=0;
           alert(request)
           deleteUsecase(request).then(res=>{
             if(res.isDeleted){
-               for (var i=0;i<this.iterationInfo.length;i++){ 
-                if(this.iterationInfo[i].iterationId==this.wannaDelete[0]) 
-                {
-                  this.iterationInfo.splice(i,1)
-                  this.wannaDelete.shift()
-                  break;
-                }
-              }
+              this.$router.go(0);
             }
             else{
               alert("删除失败")
