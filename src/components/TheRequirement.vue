@@ -171,7 +171,7 @@ color="#ECEFF1"
       </v-dialog>
 
 
-    <v-btn dark class="mx-3" v-show="hidden">
+    <v-btn dark class="mx-3" v-show="hidden" @click="deleteRequirement">
       删除需求
     </v-btn>
     <v-spacer></v-spacer>
@@ -207,6 +207,7 @@ style="font-size:14px;"></v-treeview>
 
   <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
+       v-model="wannaDelete"
       :show-select="selectable"
       :headers="headers"
       :items="requirementInfo"
@@ -259,7 +260,7 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
-import {addReq,initRequirement} from '@/request/api'
+import {addReq,initRequirement,deleteRequirement} from '@/request/api'
 export default{
     name:"TheRequirement",
     props:['id'],
@@ -321,6 +322,7 @@ export default{
         },
         memberArray:[],
         requirementInfo: [],
+        wannaDelete: [],
     }),
 
   mounted(){
@@ -402,6 +404,32 @@ export default{
             this.requirementInfo=this.requirementInfo.concat(res.require)
           })
         },
+          deleteRequirement(){
+          this.hidden=!this.hidden
+          this.selectable=!this.selectable
+          var request=[];
+          for(let i=0;i<this.wannaDelete.length;i++)
+          {
+            request.push(this.wannaDelete[i].id);
+          }
+          this.wannaDelete.length=0;
+          alert(request)
+          deleteRequirement(request).then(res=>{
+            if(res.isDeleted){
+               for (var i=0;i<this.iterationInfo.length;i++){ 
+                if(this.iterationInfo[i].iterationId==this.wannaDelete[0]) 
+                {
+                  this.iterationInfo.splice(i,1)
+                  this.wannaDelete.shift()
+                  break;
+                }
+              }
+            }
+            else{
+              alert("删除失败")
+            }
+          })
+    },
  }
 
 }

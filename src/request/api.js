@@ -39,6 +39,11 @@ export const addReq = (projectId,require) => Network.post('/requirement/addRequi
 export const initRequirement = (projectId) => Network.post('/requirement/initProjRequirement',{projectId})
 //创建用例
 export const addUseCase = (projectId,useCaseInfo) => Network.post('/usecase/addUseCase',{projectId,useCaseInfo})
+//用例删除
+export const deleteUsecase = (usecaseArrayInJson) => Network.post('/project/deleteUseCases',{data:{usecaseArrayInJson}})
+//需求删除
+export const deleteRequirement = (requirementArrayInJson) => Network.post('/project/deleteRequirements',{data:{requirementArrayInJson}})
+
 /*以下为未实现的接口*/
 //创建缺陷
 export const addDefect = (projectId,defectInfo) => Network.post('defect/addDefect',{projectId,defectInfo})
