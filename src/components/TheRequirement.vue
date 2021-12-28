@@ -397,6 +397,7 @@ export default{
               default:
               break;
           }
+          requirement.processorNumber = "201830661298"
           addReq(this.$route.params.id,
           requirement).then((res)=>{
             this.requirementInfo=this.requirementInfo.concat(res.require)

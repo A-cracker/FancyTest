@@ -149,15 +149,13 @@
       width="500"
       >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn text
+        <v-btn icons-and-text
           v-bind="attrs"
+          icon
           v-on="on"
-          color="error"
           @click="dialog_delete_member=true,dialog2=false"
         >
-          <v-btn icon>
           <v-icon>mdi-account-minus-outline</v-icon>
-          </v-btn>
         </v-btn>
       </template>
       <v-card>

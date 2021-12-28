@@ -45,7 +45,7 @@
         <v-text-field
             aria-setsize=""
             v-model="password1"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.required,rules.password_min,rules.password_islegal]"
             :type="show ? 'text' : 'password'"
             prepend-icon="mdi-lock"
@@ -58,7 +58,7 @@
         <v-text-field
             aria-setsize=""
             v-model="password2"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.password_match]"
             :type="show ? 'text' : 'password'"
             prepend-icon="mdi-lock"
@@ -113,7 +113,8 @@ import {registerInfo} from '@/request/api'
         password2:'',    //重复密码
 
         valid:false,
-        show: false,
+        show1: false,
+        show2: false,
         rules: {
           account_count:v => v.trim().length == 12 || '格式不正确',
           account_islegal:v => /^[0-9]+$/.test(v) || '不能包含除数字外的其他字符',

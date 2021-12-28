@@ -27,7 +27,7 @@
             counter="20"
             hint="名称限定20个字符内"
             prepend-icon="mdi-account"
-            label="您的用户名"
+            label="您的学号"
             clearable
             name="studentNumber"
           ></v-text-field>

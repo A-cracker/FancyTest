@@ -165,10 +165,6 @@ export default{
           this.projectList2=res.finishedProj
       });
     },
-    computed:{
-      projectList:function () {
-      return this.projectList}
-    },
     methods:{
         routerto(number){
             this.$router.push({
