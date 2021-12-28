@@ -157,7 +157,7 @@ color="#ECEFF1"
       </v-dialog>
 
 
-    <v-btn dark class="mx-3" v-show="hidden">
+    <v-btn dark class="mx-3" v-show="hidden" @click="deleteUsecase">
       删除用例
     </v-btn>
     <v-spacer></v-spacer>
@@ -190,9 +190,9 @@ style="font-size:14px;"></v-treeview>
     <v-spacer></v-spacer>
     </v-toolbar>
   </v-card>
-
   <v-card class="list overflow-y-auto overflow-x-hidden">
     <v-data-table
+       v-model="wannaDelete"
       :show-select="selectable"
       :headers="headers"
       :items="listItems"
@@ -201,6 +201,7 @@ style="font-size:14px;"></v-treeview>
       hide-default-footer
       class="elevation-1"
       @page-count="pageCount = $event"
+
     >
     
     <template v-slot:[`item.priority`]="{ item }">
@@ -245,7 +246,7 @@ style="font-size:14px;"></v-treeview>
 
 </template>
 <script>
-import {addUseCase} from '@/request/api'
+import {addUseCase,deleteUsecase} from '@/request/api'
 
 export default{
     name:"TheUseCase",
@@ -319,7 +320,7 @@ export default{
             type:'usecase'
           },
         ],
-
+        wannaDelete: [],
     }),
 
   computed: {
@@ -332,6 +333,9 @@ export default{
       date () {
         this.dateFormatted = this.formatDate(this.date)
       },
+    },
+    mounted:{
+
     },
 
  methods: {
@@ -393,6 +397,25 @@ export default{
             this.useCaseInfo=this.useCaseInfo.concat(res.require)
           })
         },
+          deleteUsecase(){
+          this.hidden=!this.hidden
+          this.selectable=!this.selectable
+          var request=[];
+          for(let i=this.wannaDelete.length-1;i>=0;i--)
+          {
+            request.push(this.wannaDelete[i].id);
+            this.wannaDelete.pop();
+          }
+          alert(request)
+          deleteUsecase(request).then(res=>{
+            if(res.isDeleted){
+              this.$router.go(0);
+            }
+            else{
+              alert("删除失败")
+            }
+          })
+    },
  }
 
 }
